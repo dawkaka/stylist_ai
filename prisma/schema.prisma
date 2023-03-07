@@ -15,7 +15,11 @@ model User {
   name          String?
   email         String?   @unique
   emailVerified DateTime?
+  premium       Boolean   @default(false)
+  portrait      String?
   image         String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
   clothes       Clothes[]
   Account       Account[]
   Session       Session[]
