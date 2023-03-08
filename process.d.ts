@@ -10,6 +10,8 @@ declare namespace NodeJS {
         TWITTER_SECRET: string
         GOOGLE_ID: string
         GOOGLE_SECRET: string
+        GOOGLE_PROJECT_ID: string
+        CLARIFAI_KEY: string
         DATABASE_URL: string
         FIREBASE_API_KEY: string
         FIREBASE_AUTH_DOMAIN: string
