@@ -20,5 +20,8 @@ declare namespace NodeJS {
         FIREBASE_MESSAGING_SENDER_ID: string
         FIREBASE_APP_ID: string
         FIREBASE_MEASUREMENT_ID: string
+        CLOUDINARY_CLOUD_NAME: string
+        CLOUDINARY_API_SECRET: string
+        CLOUDINARY_API_KEY: string
     }
 }

@@ -47,23 +47,23 @@ export default async function handler(
   //   });
 
 
-  const client = new ImageAnnotatorClient();
+  // const client = new ImageAnnotatorClient();
 
-  // Read the image file into memory
-  const [image] = await client.imageProperties({ image: { source: { imageUri: "https://cf.shopee.ph/file/b12509df5340bbd6bcfffa2ad48f3110" } } });
+  // // Read the image file into memory
+  // const [image] = await client.imageProperties({ image: { source: { imageUri: "https://cf.shopee.ph/file/b12509df5340bbd6bcfffa2ad48f3110" } } });
 
-  // Detect labels in the image
-  const [result] = await client.objectLocalization({
-    image: { source: { imageUri: "https://lp2.hm.com/hmgoepprod?set=format%5Bwebp%5D%2Cquality%5B79%5D%2Csource%5B%2Fa3%2Fbf%2Fa3bfc81d2db797e2d85fb0348b88c86e71561dee.jpg%5D%2Corigin%5Bdam%5D%2Ccategory%5Bmen_tshirtstanks_shortsleeve%5D%2Ctype%5BDESCRIPTIVESTILLLIFE%5D%2Cres%5Bm%5D%2Chmver%5B2%5D&call=url%5Bfile%3A%2Fproduct%2Fmain%5D" } },
+  // // Detect labels in the image
+  // const [result] = await client.objectLocalization({
+  //   image: { source: { imageUri: "https://lp2.hm.com/hmgoepprod?set=format%5Bwebp%5D%2Cquality%5B79%5D%2Csource%5B%2Fa3%2Fbf%2Fa3bfc81d2db797e2d85fb0348b88c86e71561dee.jpg%5D%2Corigin%5Bdam%5D%2Ccategory%5Bmen_tshirtstanks_shortsleeve%5D%2Ctype%5BDESCRIPTIVESTILLLIFE%5D%2Cres%5Bm%5D%2Chmver%5B2%5D&call=url%5Bfile%3A%2Fproduct%2Fmain%5D" } },
 
-  });
-  const objects = result.localizedObjectAnnotations;
+  // });
+  // const objects = result.localizedObjectAnnotations;
 
-  // Filter the detected objects to only include clothing
-  console.log(objects)
-  objects?.forEach((obj) =>
-    console.log(obj, obj.boundingPoly?.normalizedVertices)
-  );
+  // // Filter the detected objects to only include clothing
+  // console.log(objects)
+  // objects?.forEach((obj) =>
+  //   console.log(obj, obj.boundingPoly?.normalizedVertices)
+  // );
 
   // Extract information about the clothing items
 
