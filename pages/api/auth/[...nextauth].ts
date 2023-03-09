@@ -1,5 +1,6 @@
 import NextAuth, { NextAuthOptions } from "next-auth"
 import GoogleProvider from "next-auth/providers/google"
+import TwitterProvider from "next-auth/providers/twitter"
 import { PrismaAdapter } from "@next-auth/prisma-adapter"
 import prisma from "../../../lib/prismadb"
 // For more information on each option (and a full list of options) go to
@@ -14,6 +15,19 @@ export const authOptions: NextAuthOptions = {
     ],
     secret: process.env.NEXTAUTH_SECRET,
     adapter: PrismaAdapter(prisma),
+    callbacks: {
+        session: async ({ session, user }) => {
+            return {
+                ...session,
+                user: {
+                    id: user.id,
+                    email: user.email,
+                    name: user.name,
+                    image: user.image
+                }
+            }
+        },
+    },
 }
 
 export default NextAuth(authOptions)

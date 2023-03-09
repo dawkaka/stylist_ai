@@ -2,16 +2,21 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import prisma from '../../lib/prismadb'
 import { ImageAnnotatorClient, v1 } from "@google-cloud/vision"
+import { getServerSession } from "next-auth"
+import { authOptions } from "./auth/[...nextauth]"
 
-type Data = {
-  name: string
-  d: any
-}
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse<Data>
+  res: NextApiResponse
 ) {
+
+  const session = await getServerSession(req, res, authOptions)
+  if (!session || !session.user) {
+    return res.status(401).json({ message: "Login required" })
+  }
+
+
 
   // Creates a client
 
@@ -76,6 +81,6 @@ export default async function handler(
   // console.log(`Product ID: ${result.productLabels[0].productId}`);
 
   // Call getProductDetails with path to your image file
-  const d = await prisma.user.findMany()
-  res.status(200).json({ name: 'John Doe', d: "" })
+
+  res.status(200).json({ name: 'John Doe', session })
 }
