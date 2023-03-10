@@ -1,11 +1,10 @@
 import { useState } from "react";
-import Image from "next/image";
-import { useSession } from "next-auth/react";
 import { GetServerSidePropsContext, InferGetServerSidePropsType } from "next";
 import { authOptions } from "./api/auth/[...nextauth]";
 import { getServerSession } from "next-auth";
 import { HiViewGridAdd } from "react-icons/hi"
 import DragAndDrop from "@/components/AddClothes";
+import ClothingItem from "@/components/Item";
 // import { useSession } from "next-auth/client";
 interface WardrobeProps {
     // any props that you might pass down
@@ -15,7 +14,7 @@ export default function Wardrobe({ user }: InferGetServerSidePropsType<typeof ge
     const { image, name } = user
     const [openAdd, setOpenAdd] = useState(false)
     return (
-        <div className="min-h-screen bg-gray-100">
+        <div className="min-h-screen">
             <button data-drawer-target="default-sidebar" data-drawer-toggle="default-sidebar" aria-controls="default-sidebar" type="button" className="inline-flex items-center p-2 mt-2 ml-3 text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600">
                 <span className="sr-only">Open sidebar</span>
                 <svg className="w-6 h-6" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
@@ -56,9 +55,19 @@ export default function Wardrobe({ user }: InferGetServerSidePropsType<typeof ge
                 </div>
             </aside>
 
-            <div className="p-4 sm:ml-64">
-
-
+            <div className="p-4 sm:ml-64 flex justify-center flex-wrap gap-6">
+                {
+                    new Array(100).fill("s").map((a, ind) => <ClothingItem
+                        key={ind}
+                        id="hahaahaha"
+                        name="T-shirt"
+                        brand="Gucci"
+                        size="xl"
+                        color="black"
+                        description="a black jacket with belts"
+                        image="/jackets-14.webp"
+                    />)
+                }
             </div>
             {openAdd && <DragAndDrop close={() => setOpenAdd(false)} />}
 

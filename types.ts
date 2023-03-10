@@ -10,6 +10,11 @@ export interface WardrobeItem {
     updatedAt: Date;
 };
 
+
+export interface Clothing extends Omit<WardrobeItem, "createdAt" | "updatedAt"> {
+    id: string
+}
+
 export interface PaginatedResult {
     items: WardrobeItem[];
     nextFetch: number
