@@ -23,14 +23,14 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         case 'PUT':
             try {
 
-                const { name, color, brand, size, description } = req.body;
+                const { fit, type, color, brand, description } = req.body;
                 await prisma.clothes.update({
                     where: { id: id as string },
                     data: {
-                        name: name,
-                        color: color,
-                        brand: brand,
-                        size: size,
+                        type,
+                        fit,
+                        color,
+                        brand,
                         description: description,
                     },
                 });
