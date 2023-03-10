@@ -5,6 +5,10 @@ import { getServerSession } from "next-auth";
 import { HiViewGridAdd } from "react-icons/hi"
 import DragAndDrop from "@/components/AddClothes";
 import ClothingItem from "@/components/Item";
+import { useInfiniteQuery } from "react-query";
+import axios from "axios";
+import { Clothing } from "@/types";
+import { Error, Loader } from "@/components/misc";
 // import { useSession } from "next-auth/client";
 interface WardrobeProps {
     // any props that you might pass down
@@ -13,6 +17,38 @@ interface WardrobeProps {
 export default function Wardrobe({ user }: InferGetServerSidePropsType<typeof getServerSideProps>) {
     const { image, name } = user
     const [openAdd, setOpenAdd] = useState(false)
+    const fetchClothes = ({ pageParam = 0 }) => axios.get(`/api/wardrobe?page=${pageParam}`).then(res => res.data)
+
+    const {
+        data,
+        fetchNextPage,
+        hasNextPage,
+        isError,
+        isLoading,
+        isFetching,
+    } = useInfiniteQuery(["wardrobe"], fetchClothes,
+        {
+            getNextPageParam: (lastPage) => {
+                console.log(lastPage)
+                if (lastPage) {
+                    if (!lastPage || lastPage.isEnd) {
+                        return undefined
+                    }
+                }
+                return lastPage.next
+            },
+        })
+
+    let clothes: Clothing[] = []
+    if (data && data.pages) {
+        for (let page of data.pages) {
+            if (page.clothes) {
+                clothes = clothes.concat(page.clothes)
+            }
+        }
+    }
+
+
     return (
         <div className="min-h-screen">
             <button data-drawer-target="default-sidebar" data-drawer-toggle="default-sidebar" aria-controls="default-sidebar" type="button" className="inline-flex items-center p-2 mt-2 ml-3 text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600">
@@ -54,21 +90,50 @@ export default function Wardrobe({ user }: InferGetServerSidePropsType<typeof ge
                     </div>
                 </div>
             </aside>
+            {
+                (!isError && !isLoading && clothes.length === 0) ? (
+                    <div className="flex flex-col w-full items-center justify-center gap-8 pt-16">
+                        <div className="flex flex-col items-center gap-2">
+                            <h4 className="font-bold text-3xl text-[var(--accents-8)] text-center">Your Wardrobe is Empty</h4>
+                            <p className="max-w-[400px] text-center text-[var(--accents-6)]">
+                                Add more clothes to your wardrobe and they'll appear here!
+                            </p>
+                        </div>
+                        <button
+                            onClick={() => setOpenAdd(true)}
+                            className="rounded-full bg-green-500 px-4 py-2 flex items-center gap-2 shadow"
+                        >
+                            <svg width="22px" height="22px" viewBox="0 0 24 24" fill="var(--primary-darker)" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
+                                <g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"></g><g id="SVGRepo_iconCarrier">
+                                    <path
+                                        fill="white"
+                                        d="M13.5 3C13.5 2.44772 13.0523 2 12.5 2H11.5C10.9477 2 10.5 2.44772 10.5 3V10.5H3C2.44772 10.5 2 10.9477 2 11.5V12.5C2 13.0523 2.44772 13.5 3 13.5H10.5V21C10.5 21.5523 10.9477 22 11.5 22H12.5C13.0523 22 13.5 21.5523 13.5 21V13.5H21C21.5523 13.5 22 13.0523 22 12.5V11.5C22 10.9477 21.5523 10.5 21 10.5H13.5V3Z"
+                                    >
+                                    </path>
+                                </g>
+                            </svg>
+                            <span className="text-xl text-white">Add clothes</span>
+                        </button>
+                    </div>
+                ) : (
+                    <div className="p-4 sm:ml-64 grid grid-cols-1 max-[600px]:grid-cols-1 max-[601px]:grid-cols-2 min-[850px]:grid-cols-1 min-[851px]:grid-cols-2 min-[1151px]:grid-cols-3 bg-gray-50 flex-wrap gap-4 sm:gap-10">
+                        {
+                            clothes.map((clothe, ind) => <ClothingItem
+                                key={ind}
+                                {...clothe}
+                            />)
+                        }
 
-            <div className="p-4 sm:ml-64 grid grid-cols-1 max-[600px]:grid-cols-1 max-[601px]:grid-cols-2 min-[850px]:grid-cols-1 min-[851px]:grid-cols-2 min-[1151px]:grid-cols-3 bg-gray-50 flex-wrap gap-4 sm:gap-10">
-                {
-                    new Array(100).fill("s").map((a, ind) => <ClothingItem
-                        key={ind}
-                        id="hahaahaha"
-                        type=""
-                        brand="Gucci"
-                        fit="Loose"
-                        color="black"
-                        description="a black jacket with belts"
-                        image="/jackets-14.webp"
-                    />)
-                }
-            </div>
+                        {
+                            hasNextPage ? <Loader loadMore={() => fetchNextPage()} hasNext={hasNextPage} isFetching={isFetching} /> : null
+                        }
+                        {
+                            isError && <Error message={"Something went wrong"} />
+                        }
+                    </div>
+                )
+            }
+
             {openAdd && <DragAndDrop close={() => setOpenAdd(false)} />}
 
         </div>
