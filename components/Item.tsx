@@ -2,6 +2,7 @@ import axios, { AxiosError, AxiosResponse } from "axios";
 import React, { useState } from "react";
 import { useMutation } from "react-query";
 import { Clothing } from "../types";
+import { Input, Label } from "./misc";
 
 
 
@@ -28,20 +29,19 @@ const ClothingItem: React.FC<Clothing> = (clothing) => {
     };
 
     return (
-        <div className="flex flex-col md:flex-row rounded-lg items-center p-4 justify-center bg-white border">
+        <div className="flex flex-col shadow-lg rounded-lg items-center p-4 justify-center bg-white">
             <img src={clothing.image} alt={clothing.name}
                 onClick={() => setEdit(true)}
-                className="w-[90%] sm:w-[220px] mb-4"
+                className="max-[574px]:h-[80vw] max-[574px]:w-[80vw] h-[240px] w-[240px] mb-4"
                 style={{
                     objectFit: "cover"
-
                 }}
             />
-            <div className="grid grid-cols-2 sm:flex sm:flex-col gap-2 text-gray-500">
+            <div className="flex flex-col gap-2 max-[574px]:w-[80vw]  w-[240px]">
                 <div className="flex flex-col">
-                    <label htmlFor={`name-${clothing.id}`}>Name</label>
-                    <input
-                        className="border rounded px-2"
+                    <Label htmlFor={`name-${clothing.id}`} label="Name" />
+                    <Input
+                        placeholder="eg: T-shirt, jacket, dress, heels, sneaker etc."
                         id={`name-${clothing.id}`}
                         type="text"
                         value={name}
@@ -49,36 +49,45 @@ const ClothingItem: React.FC<Clothing> = (clothing) => {
                     />
                 </div>
                 <div className="flex flex-col">
-                    <label htmlFor={`description-${clothing.id}`}>Description</label>
-                    <input
-                        className="border rounded px-2"
+                    <Label htmlFor={`description-${clothing.id}`} label="Description" />
+                    <Input
+                        placeholder="A black jacket with long gold colored sleeves"
                         id={`description-${clothing.id}`}
                         type="text"
                         value={description}
-                        onChange={(e) => setDescription(e.target.value)}
+                        onChange={(e) => setName(e.target.value)}
                     />
+
+                </div>
+                <div className="flex gap-4 w-full">
+                    <div
+                        className="flex flex-col"
+                        style={{ width: "110px" }}
+                    >
+                        <Label htmlFor={`color-${clothing.id}`} label="Color" />
+                        <Input
+                            placeholder="white, black, red, pink"
+                            id={`color-${clothing.id}`}
+                            type="text"
+                            value={color}
+                            onChange={(e) => setColor(e.target.value)}
+                        />
+                    </div>
+                    <div
+                        className="flex flex-col"
+                        style={{ width: "110px" }}
+                    >
+                        <Label htmlFor={`brand-${clothing.id}`} label="Brand" />
+                        <Input
+                            placeholder="e.g Gucci, Lacorste, Loui vuitton"
+                            id={`brand-${clothing.id}`}
+                            type="text"
+                            value={brand}
+                            onChange={(e) => setBrand(e.target.value)}
+                        />
+                    </div>
                 </div>
 
-                <div className="flex flex-col">
-                    <label htmlFor={`color-${clothing.id}`}>Color</label>
-                    <input
-                        className="border rounded px-2"
-                        id={`color-${clothing.id}`}
-                        type="text"
-                        value={color}
-                        onChange={(e) => setColor(e.target.value)}
-                    />
-                </div>
-                <div className="flex flex-col">
-                    <label htmlFor={`brand-${clothing.id}`}>Brand</label>
-                    <input
-                        className="border rounded px-2"
-                        id={`brand-${clothing.id}`}
-                        type="text"
-                        value={brand}
-                        onChange={(e) => setBrand(e.target.value)}
-                    />
-                </div>
 
                 {/* add other input fields for other fields in prisma schema */}
                 <div className="flex flex-col">
@@ -91,7 +100,7 @@ const ClothingItem: React.FC<Clothing> = (clothing) => {
 
                 </div>
             </div>
-        </div>
+        </div >
     );
 };
 

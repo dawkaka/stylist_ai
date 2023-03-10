@@ -55,7 +55,7 @@ export default function Wardrobe({ user }: InferGetServerSidePropsType<typeof ge
                 </div>
             </aside>
 
-            <div className="p-4 sm:ml-64 flex justify-center flex-wrap gap-6">
+            <div className="p-4 sm:ml-64 flex justify-center bg-gray-50 flex-wrap gap-4 sm:gap-10">
                 {
                     new Array(100).fill("s").map((a, ind) => <ClothingItem
                         key={ind}
