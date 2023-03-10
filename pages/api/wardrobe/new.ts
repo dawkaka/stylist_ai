@@ -77,9 +77,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 };
 
 
-export const routeConfig = {
+export const config = {
     api: {
-        bodyParser: true
+        bodyParser: false
     }
 }
 

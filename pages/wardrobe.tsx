@@ -5,13 +5,15 @@ import { GetServerSidePropsContext, InferGetServerSidePropsType } from "next";
 import { authOptions } from "./api/auth/[...nextauth]";
 import { getServerSession } from "next-auth";
 import { HiViewGridAdd } from "react-icons/hi"
+import DragAndDrop from "@/components/AddClothes";
 // import { useSession } from "next-auth/client";
 interface WardrobeProps {
     // any props that you might pass down
 }
 
-export default function Wardrobe({ session }: InferGetServerSidePropsType<typeof getServerSideProps>) {
-    const { image, name } = session.user!
+export default function Wardrobe({ user }: InferGetServerSidePropsType<typeof getServerSideProps>) {
+    const { image, name } = user
+    const [openAdd, setOpenAdd] = useState(false)
     return (
         <div className="min-h-screen bg-gray-100">
             <button data-drawer-target="default-sidebar" data-drawer-toggle="default-sidebar" aria-controls="default-sidebar" type="button" className="inline-flex items-center p-2 mt-2 ml-3 text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600">
@@ -40,8 +42,9 @@ export default function Wardrobe({ session }: InferGetServerSidePropsType<typeof
                         </div>
 
                         <div
-                            role={"button"}
-                            className="pointer w-full flex justify-between items-center  bg-blue-500 text-white px-6 py-4 font-normal rounded-lg dark:text-white hover:bg-blue-600">
+                            role="button"
+                            onClick={() => setOpenAdd(true)}
+                            className="pointer w-full flex justify-between items-center  bg-green-500 text-white px-6 py-4 font-normal rounded-lg dark:text-white hover:bg-green-600">
                             <span className="flex-1 whitespace-nowrap text-xl">Add clothes</span>
                             <HiViewGridAdd size={30} />
                         </div>
@@ -54,54 +57,10 @@ export default function Wardrobe({ session }: InferGetServerSidePropsType<typeof
             </aside>
 
             <div className="p-4 sm:ml-64">
-                <div className="p-4 border-2 border-gray-200 border-dashed rounded-lg dark:border-gray-700">
-                    <div className="grid grid-cols-3 gap-4 mb-4">
-                        <div className="flex items-center justify-center h-24 rounded bg-gray-50 dark:bg-gray-800">
-                            <p className="text-2xl text-gray-400 dark:text-gray-500">+</p>
-                        </div>
-                        <div className="flex items-center justify-center h-24 rounded bg-gray-50 dark:bg-gray-800">
-                            <p className="text-2xl text-gray-400 dark:text-gray-500">+</p>
-                        </div>
-                        <div className="flex items-center justify-center h-24 rounded bg-gray-50 dark:bg-gray-800">
-                            <p className="text-2xl text-gray-400 dark:text-gray-500">+</p>
-                        </div>
-                    </div>
-                    <div className="flex items-center justify-center h-48 mb-4 rounded bg-gray-50 dark:bg-gray-800">
-                        <p className="text-2xl text-gray-400 dark:text-gray-500">+</p>
-                    </div>
-                    <div className="grid grid-cols-2 gap-4 mb-4">
-                        <div className="flex items-center justify-center rounded bg-gray-50 h-28 dark:bg-gray-800">
-                            <p className="text-2xl text-gray-400 dark:text-gray-500">+</p>
-                        </div>
-                        <div className="flex items-center justify-center rounded bg-gray-50 h-28 dark:bg-gray-800">
-                            <p className="text-2xl text-gray-400 dark:text-gray-500">+</p>
-                        </div>
-                        <div className="flex items-center justify-center rounded bg-gray-50 h-28 dark:bg-gray-800">
-                            <p className="text-2xl text-gray-400 dark:text-gray-500">+</p>
-                        </div>
-                        <div className="flex items-center justify-center rounded bg-gray-50 h-28 dark:bg-gray-800">
-                            <p className="text-2xl text-gray-400 dark:text-gray-500">+</p>
-                        </div>
-                    </div>
-                    <div className="flex items-center justify-center h-48 mb-4 rounded bg-gray-50 dark:bg-gray-800">
-                        <p className="text-2xl text-gray-400 dark:text-gray-500">+</p>
-                    </div>
-                    <div className="grid grid-cols-2 gap-4">
-                        <div className="flex items-center justify-center rounded bg-gray-50 h-28 dark:bg-gray-800">
-                            <p className="text-2xl text-gray-400 dark:text-gray-500">+</p>
-                        </div>
-                        <div className="flex items-center justify-center rounded bg-gray-50 h-28 dark:bg-gray-800">
-                            <p className="text-2xl text-gray-400 dark:text-gray-500">+</p>
-                        </div>
-                        <div className="flex items-center justify-center rounded bg-gray-50 h-28 dark:bg-gray-800">
-                            <p className="text-2xl text-gray-400 dark:text-gray-500">+</p>
-                        </div>
-                        <div className="flex items-center justify-center rounded bg-gray-50 h-28 dark:bg-gray-800">
-                            <p className="text-2xl text-gray-400 dark:text-gray-500">+</p>
-                        </div>
-                    </div>
-                </div>
+
+
             </div>
+            {openAdd && <DragAndDrop close={() => setOpenAdd(false)} />}
 
         </div>
     )
@@ -113,7 +72,6 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
         return { redirect: { destination: "/auth/signin" } };
     }
     return {
-        props: { session },
+        props: { user: session.user },
     }
 }
-

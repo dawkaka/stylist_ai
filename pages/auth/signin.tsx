@@ -11,10 +11,10 @@ export default function SignIn({ providers }: InferGetServerSidePropsType<typeof
         <div className="w-full h-full flex flex-col justify-center items-center">
             <main className="rounded-2xl py-10 px-10 border w-full max-w-[400px] shadow">
                 <div className="w-full mb-10 flex flex-col gap-4 items-center justify-center">
-                    <div className="rounded-full flex items-center justify-center w-20 h-20 bg-blue-500">
+                    <div className="rounded-full flex items-center justify-center w-20 h-20 bg-green-500">
                         <span className="text-white font-bold">VW</span>
                     </div>
-                    <h3 className="">Sign in to <span className="text-blue-500">Virtual Wardrobe</span></h3>
+                    <h3 className="">Sign in to <span className="text-green-500">Virtual Wardrobe</span></h3>
                 </div>
                 <div className="flex gap-4 flex-col w-full">
                     {Object.values(providers).map((provider) => (
@@ -47,7 +47,7 @@ function Provider({ signIn, name }: { signIn: () => void, name: string }) {
     }
     return (
         <button
-            className="appearance-none flex items-center justify-center gap-4 rounded-lg border py-3 px-2 hover:border-blue-500"
+            className="appearance-none flex items-center justify-center gap-4 rounded-lg border py-3 px-2 hover:border-green-500"
             onClick={signIn}
         >
             <span className="w-[200px] flex items-center gap-4 overflow-x-hidden">
