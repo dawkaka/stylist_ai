@@ -4,6 +4,7 @@ import { useMutation } from "react-query";
 import { AiOutlineEdit } from "react-icons/ai"
 import { Clothing } from "../types";
 import { Input, Label, Select } from "./misc";
+import EditClothePicture from "./EditClothePicture";
 
 
 
@@ -14,6 +15,7 @@ const ClothingItem: React.FC<Clothing> = (clothing) => {
     const [brand, setBrand] = useState(clothing.brand);
     const [fit, setFit] = useState(clothing.fit)
     const [edited, setEdited] = useState(false)
+    const [showImageModal, setShowImageModal] = useState(false)
 
     const saveMutation = useMutation<AxiosResponse<any, any>, AxiosError<any, any>, Omit<Clothing, "image" | "id">>({
         mutationFn: (data) => axios.put(`/api/wardrobe/${clothing.id}`, data).then(res => res.data),
@@ -35,10 +37,15 @@ const ClothingItem: React.FC<Clothing> = (clothing) => {
 
     return (
         <div id="cont" className="flex flex-col w-full shadow rounded-lg group items-center p-4 justify-center bg-white">
+            {
+                showImageModal && <EditClothePicture id={clothing.id} close={() => setShowImageModal(false)} />
+            }
             <div className="relative w-full mb-4 pt-[100%]">
-                <img src={clothing.image} alt={clothing.type} className="absolute top-0 left-0 w-full h-full w-mb-4 object-cover" />
+                <img src={clothing.image} id={clothing.id} alt={clothing.type} className="absolute top-0 left-0 w-full h-full w-mb-4 object-cover" />
                 <div id="edit" className="absolute top-0 left-0 right-0 w-full flex justify-between items-center opacity-0 group-hover:opacity-100">
-                    <button>
+                    <button
+                        onClick={() => setShowImageModal(true)}
+                    >
                         <AiOutlineEdit size={25} />
                     </button>
                     <div className="flex items-center">
