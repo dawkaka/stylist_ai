@@ -55,7 +55,7 @@ const ClothingItem: React.FC<Clothing> = (clothing) => {
                         id={`description-${clothing.id}`}
                         type="text"
                         value={description}
-                        onChange={(e) => setName(e.target.value)}
+                        onChange={(e) => setDescription(e.target.value)}
                     />
 
                 </div>
