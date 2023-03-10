@@ -28,10 +28,10 @@ model User {
 model Clothes {
   id          String   @id @default(uuid())
   image       String
-  name        String
+  type        String
+  fit         String
   color       String
   brand       String
-  size        String
   description String
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt

@@ -19,13 +19,14 @@ const handler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse
             try {
                 const items = await prisma.clothes.findMany({
                     where: { userId },
+                    select: { id: true, image: true, fit: true, type: true, description: true },
                     orderBy: { updatedAt: 'desc' },
                     skip,
                     take: limit,
                 });
 
                 res.status(200).json({
-                    items,
+                    clothes: items,
                     isEnd: items.length < limit,
                     nextFetch: skip + limit
                 });

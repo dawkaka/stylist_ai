@@ -17,7 +17,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         return res.status(401).json({ message: "Login required" })
     }
     const { method } = req
-
+    const userId = session.user.id
     switch (method) {
         case 'POST':
             const form = new formidable.IncomingForm();
@@ -28,7 +28,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
                 }
 
                 try {
-                    const imageUrls: string[] = [];
+                    const imageUrls = new Set<string>();
                     const fileKeys = Object.keys(files);
 
                     for (let i = 0; i < fileKeys.length; i++) {
@@ -37,7 +37,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
                         const isLessThan5MB = file.size < 5000000; // 5MB in bytes
                         if (!isImage || !isLessThan5MB) {
                             res.status(400).json({
-                                error: `File '${file.originalFilename}' is not a valid image or exceeds the size limit of 5MB`,
+                                message: `File '${file.originalFilename}' is not a valid image or exceeds the size limit of 5MB`,
                             });
                             return;
                         }
@@ -46,26 +46,25 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
                     for (let i = 0; i < fileKeys.length; i++) {
                         const file = files[fileKeys[i]] as formidable.File;
                         const result = await cloudinary.v2.uploader.upload(file.filepath);
-                        imageUrls.push(result.secure_url);
+                        imageUrls.add(result.secure_url);
                     }
 
-                    const clothes = imageUrls.map((imageUrl) => ({
+                    const clothes = Array.from(imageUrls).map((imageUrl) => ({
                         image: imageUrl,
-                        name: "",
+                        type: "",
+                        fit: "",
                         color: "",
-                        season: "",
                         brand: "",
-                        size: "",
                         description: "",
-                        userId: ""
+                        userId
                     }));
 
                     const createdClothes = await prisma.clothes.createMany({
                         data: clothes,
-                        skipDuplicates: true,
                     });
-                    res.status(200).json({ message: "Clothes added successfully" });
+                    res.status(200).json({ message: "Clothes added successfully", createdClothes });
                 } catch (err) {
+                    console.log(err)
                     res.status(500).json({ error: "Error adding clothes" });
                 }
             });
