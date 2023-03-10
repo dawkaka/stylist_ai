@@ -29,7 +29,6 @@ export default function Wardrobe({ user }: InferGetServerSidePropsType<typeof ge
     } = useInfiniteQuery(["wardrobe"], fetchClothes,
         {
             getNextPageParam: (lastPage) => {
-                console.log(lastPage)
                 if (lastPage) {
                     if (!lastPage || lastPage.isEnd) {
                         return undefined
@@ -48,7 +47,6 @@ export default function Wardrobe({ user }: InferGetServerSidePropsType<typeof ge
         }
     }
 
-
     return (
         <div className="min-h-screen">
             <button data-drawer-target="default-sidebar" data-drawer-toggle="default-sidebar" aria-controls="default-sidebar" type="button" className="inline-flex items-center p-2 mt-2 ml-3 text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600">
@@ -63,7 +61,7 @@ export default function Wardrobe({ user }: InferGetServerSidePropsType<typeof ge
                     <div className="flex flex-col gap-5">
                         <div className="flex py-10 justify-between  items-center border-b overflow-x-hidden">
                             <img
-                                src={"/jackets-14.webp"}
+                                src={image!}
                                 alt={"your profile picture"}
                                 style={{
                                     height: "70px",

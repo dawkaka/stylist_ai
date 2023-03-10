@@ -1,8 +1,10 @@
 import axios, { AxiosError, AxiosResponse } from "axios";
 import React, { useState } from "react";
 import { useMutation } from "react-query";
+import { AiOutlineEdit } from "react-icons/ai"
 import { Clothing } from "../types";
 import { Input, Label, Select } from "./misc";
+
 
 
 const ClothingItem: React.FC<Clothing> = (clothing) => {
@@ -13,13 +15,16 @@ const ClothingItem: React.FC<Clothing> = (clothing) => {
     const [fit, setFit] = useState(clothing.fit)
     const [edited, setEdited] = useState(false)
 
-    const saveMutation = useMutation<AxiosResponse<any, any>, AxiosError<any, any>, Omit<Clothing, "image">>({
-        mutationFn: (data) => axios.put(`/api/wardrobe/${clothing.id}`, data).then(res => res.data)
+    const saveMutation = useMutation<AxiosResponse<any, any>, AxiosError<any, any>, Omit<Clothing, "image" | "id">>({
+        mutationFn: (data) => axios.put(`/api/wardrobe/${clothing.id}`, data).then(res => res.data),
+        onSuccess: () => {
+            setEdited(false)
+        }
     });
 
     const handleSave = () => {
+        if (saveMutation.isLoading) return
         saveMutation.mutate({
-            id: clothing.id,
             type,
             description,
             color,
@@ -29,14 +34,17 @@ const ClothingItem: React.FC<Clothing> = (clothing) => {
     };
 
     return (
-        <div className="flex flex-col w-full shadow rounded-lg items-center p-4 justify-center bg-white">
-            <div className="relative w-full mb-4 pt-[100%] bg-red-100">
-                <img src={clothing.image} alt={clothing.type}
-                    className="absolute top-0 left-0 w-full h-full w-mb-4"
-                    style={{
-                        objectFit: "cover"
-                    }}
-                />
+        <div id="cont" className="flex flex-col w-full shadow rounded-lg group items-center p-4 justify-center bg-white">
+            <div className="relative w-full mb-4 pt-[100%]">
+                <img src={clothing.image} alt={clothing.type} className="absolute top-0 left-0 w-full h-full w-mb-4 object-cover" />
+                <div id="edit" className="absolute top-0 left-0 right-0 w-full flex justify-between items-center opacity-0 group-hover:opacity-100">
+                    <button>
+                        <AiOutlineEdit size={25} />
+                    </button>
+                    <div className="flex items-center">
+                        <input id="checked-checkbox" type="checkbox" value="" className="w-[18px] h-[18px] text-blue-600 accent-green-600 bg-gray-100 border-gray-300 rounded" />
+                    </div>
+                </div>
             </div>
             <div className="flex flex-col gap-2 w-full">
                 <div className="grid grid-cols-2 gap-4 w-full">
@@ -116,19 +124,18 @@ const ClothingItem: React.FC<Clothing> = (clothing) => {
                         />
                     </div>
                 </div>
+                <div className="flex flex-col h-8">
 
-
-                {
-                    edited && <div className="flex flex-col">
+                    {
+                        edited &&
                         <button
                             onClick={handleSave}
                             className="flex py-1 justify-center rounded bg-green-500 text-white"
                         >
-                            Save Changes
+                            {saveMutation.isLoading ? "Saving..." : "  Save Changes"}
                         </button>
-
-                    </div>
-                }
+                    }
+                </div>
             </div>
         </div >
     );
