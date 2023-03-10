@@ -5,7 +5,6 @@ import { Clothing } from "../types";
 import { Input, Label, Select } from "./misc";
 
 
-
 const ClothingItem: React.FC<Clothing> = (clothing) => {
     const [type, setType] = useState(clothing.type);
     const [description, setDescription] = useState(clothing.description);
@@ -31,12 +30,14 @@ const ClothingItem: React.FC<Clothing> = (clothing) => {
 
     return (
         <div className="flex flex-col w-full shadow rounded-lg items-center p-4 justify-center bg-white">
-            <img src={clothing.image} alt={clothing.type}
-                className="mb-4"
-                style={{
-                    objectFit: "cover"
-                }}
-            />
+            <div className="relative w-full mb-4 pt-[100%] bg-red-100">
+                <img src={clothing.image} alt={clothing.type}
+                    className="absolute top-0 left-0 w-full h-full w-mb-4"
+                    style={{
+                        objectFit: "cover"
+                    }}
+                />
+            </div>
             <div className="flex flex-col gap-2 w-full">
                 <div className="grid grid-cols-2 gap-4 w-full">
                     <div className="flex flex-col">
