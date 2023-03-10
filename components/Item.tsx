@@ -12,7 +12,8 @@ const ClothingItem: React.FC<Clothing> = (clothing) => {
     const [color, setColor] = useState(clothing.color);
     const [brand, setBrand] = useState(clothing.brand);
     const [fit, setFit] = useState(clothing.fit)
-    const [edit, setEdit] = useState(false)
+    const [edited, setEdited] = useState(false)
+
     const saveMutation = useMutation<AxiosResponse<any, any>, AxiosError<any, any>, Omit<Clothing, "image">>({
         mutationFn: (data) => axios.put(`/api/wardrobe/${clothing.id}`, data).then(res => res.data)
     });
@@ -31,7 +32,6 @@ const ClothingItem: React.FC<Clothing> = (clothing) => {
     return (
         <div className="flex flex-col w-full shadow rounded-lg items-center p-4 justify-center bg-white">
             <img src={clothing.image} alt={clothing.type}
-                onClick={() => setEdit(true)}
                 className="mb-4"
                 style={{
                     objectFit: "cover"
@@ -44,7 +44,11 @@ const ClothingItem: React.FC<Clothing> = (clothing) => {
                         <Select
                             id={`type-${clothing.id}`}
                             value={type}
-                            onChange={(e) => setType(e.target.value)}
+                            onChange={(e) => {
+                                setType(e.target.value)
+                                setEdited(true)
+                            }
+                            }
                             options={["Top", "Bottom", "Footwear", "Underwear", "Dress", "Outerwear", "Accessory"]}
                         />
                     </div>
@@ -53,7 +57,11 @@ const ClothingItem: React.FC<Clothing> = (clothing) => {
                         <Select
                             id={`fit-${clothing.id}`}
                             value={fit}
-                            onChange={(e) => setFit(e.target.value)}
+                            onChange={(e) => {
+                                setFit(e.target.value)
+                                setEdited(true)
+                            }
+                            }
                             options={["Regular", "Relaxed", "Loose", "Tight", "Oversized",]}
                         />
                     </div>
@@ -65,7 +73,11 @@ const ClothingItem: React.FC<Clothing> = (clothing) => {
                         id={`description-${clothing.id}`}
                         type="text"
                         value={description}
-                        onChange={(e) => setDescription(e.target.value)}
+                        onChange={(e) => {
+                            setDescription(e.target.value)
+                            setEdited(true)
+                        }
+                        }
                     />
 
                 </div>
@@ -79,7 +91,11 @@ const ClothingItem: React.FC<Clothing> = (clothing) => {
                             id={`color-${clothing.id}`}
                             type="text"
                             value={color}
-                            onChange={(e) => setColor(e.target.value)}
+                            onChange={(e) => {
+                                setColor(e.target.value)
+                                setEdited(true)
+                            }
+                            }
                         />
                     </div>
                     <div
@@ -91,22 +107,27 @@ const ClothingItem: React.FC<Clothing> = (clothing) => {
                             id={`brand-${clothing.id}`}
                             type="text"
                             value={brand}
-                            onChange={(e) => setBrand(e.target.value)}
+                            onChange={(e) => {
+                                setBrand(e.target.value)
+                                setEdited(true)
+                            }
+                            }
                         />
                     </div>
                 </div>
 
 
-                {/* add other input fields for other fields in prisma schema */}
-                <div className="flex flex-col">
-                    <button
-                        onClick={handleSave}
-                        className="flex py-1 justify-center rounded bg-green-500 text-white"
-                    >
-                        Save Changes
-                    </button>
+                {
+                    edited && <div className="flex flex-col">
+                        <button
+                            onClick={handleSave}
+                            className="flex py-1 justify-center rounded bg-green-500 text-white"
+                        >
+                            Save Changes
+                        </button>
 
-                </div>
+                    </div>
+                }
             </div>
         </div >
     );
