@@ -14,7 +14,7 @@ const EditClothePicture: React.FC<{ id: string, close: () => void }> = ({ id, cl
     const [file, setFile] = useState<FileItem>();
 
     const changePictureMutation = useMutation<AxiosResponse<any, any>, AxiosError<any, any>, FormData>({
-        mutationFn: (file) => axios.patch(`/api/wardrobe/${id}`, file),
+        mutationFn: (file) => axios.patch(`/api/wardrobe/item-image/${id}`, file),
         onSuccess: () => {
             const img = document.querySelector(`#${id}`) as HTMLImageElement
             if (img && file) {

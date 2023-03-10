@@ -2,8 +2,8 @@ import formidable from "formidable";
 import { NextApiRequest, NextApiResponse } from "next";
 import { getServerSession } from "next-auth";
 import cloudinary from "cloudinary";
-import prisma from "../../../lib/prismadb";
-import { authOptions } from "../auth/[...nextauth]";
+import prisma from "../../../../lib/prismadb";
+import { authOptions } from "../../auth/[...nextauth]";
 
 cloudinary.v2.config({
     cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -20,27 +20,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     }
 
     switch (method) {
-        case 'PUT':
-            try {
-
-                const { fit, type, color, brand, description } = req.body;
-                await prisma.clothes.update({
-                    where: { id: id as string },
-                    data: {
-                        type,
-                        fit,
-                        color,
-                        brand,
-                        description: description,
-                    },
-                });
-                res.status(200).json({ message: "Clothing description updated successfully" });
-            } catch (err) {
-                console.log(err);
-                res.status(500).json({ error: "Error updating clothing item" });
-            }
-            break;
-
         case "PATCH":
             const form = new formidable.IncomingForm();
             form.parse(req, async (err, fields, files) => {
@@ -79,22 +58,16 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
                 }
             })
             break;
-        case "DELETE":
-            try {
-                const clothing = await prisma.clothes.findUnique({ where: { id: String(id) } });
-                if (!clothing) {
-                    return res.status(404).json({ message: 'Clothing not found' });
-                }
-                await prisma.clothes.delete({ where: { id: String(id) } });
-                res.status(200).json({ message: 'Clothing deleted successfully' });
-            } catch (err) {
-                console.log(err);
-                res.status(500).json({ error: 'Error deleting clothing' });
-            }
         default:
-            res.setHeader('Allow', ['PUT', 'PATCH', "DELETE"])
+            res.setHeader('Allow', ['PATCH'])
             res.status(405).end(`Method ${method} Not Allowed`)
     }
 };
+
+export const config = {
+    api: {
+        bodyParser: false
+    }
+}
 
 export default handler
