@@ -35,7 +35,7 @@ export default function Wardrobe({ user }: InferGetServerSidePropsType<typeof ge
                                 }}
                                 className="border rounded-full"
                             />
-                            <p className="p-2 text-base font-medium text-gray-900 rounded-lg dark:text-white">
+                            <p className="p-2 text-base font-bold text-lg text-gray-900 rounded-lg dark:text-white">
                                 {name}
                             </p>
                         </div>
@@ -55,14 +55,14 @@ export default function Wardrobe({ user }: InferGetServerSidePropsType<typeof ge
                 </div>
             </aside>
 
-            <div className="p-4 sm:ml-64 flex justify-center bg-gray-50 flex-wrap gap-4 sm:gap-10">
+            <div className="p-4 sm:ml-64 grid grid-cols-1 max-[600px]:grid-cols-1 max-[601px]:grid-cols-2 min-[850px]:grid-cols-1 min-[851px]:grid-cols-2 min-[1151px]:grid-cols-3 bg-gray-50 flex-wrap gap-4 sm:gap-10">
                 {
                     new Array(100).fill("s").map((a, ind) => <ClothingItem
                         key={ind}
                         id="hahaahaha"
-                        name="T-shirt"
+                        type=""
                         brand="Gucci"
-                        size="xl"
+                        fit="Loose"
                         color="black"
                         description="a black jacket with belts"
                         image="/jackets-14.webp"

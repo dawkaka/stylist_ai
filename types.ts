@@ -1,10 +1,10 @@
 export interface WardrobeItem {
     id: string;
     image: string;
-    name: string;
+    type: string;
     color: string;
     brand: string;
-    size: string;
+    fit: string;
     description: string;
     createdAt: Date;
     updatedAt: Date;
