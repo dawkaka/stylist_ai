@@ -23,5 +23,6 @@ declare namespace NodeJS {
         CLOUDINARY_CLOUD_NAME: string
         CLOUDINARY_API_SECRET: string
         CLOUDINARY_API_KEY: string
+        OPENAI_API_KEY: string
     }
 }

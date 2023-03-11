@@ -18,8 +18,17 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     if (!session || !session.user) {
         return res.status(401).json({ message: "Login required" })
     }
+    const userId = session.user.id
 
     switch (method) {
+        case "GET":
+            try {
+                const item = await prisma.clothes.findUnique({ where: { id: id as string } })
+                res.json(item)
+            } catch (error) {
+                res.status(500).json({ error: "Error updating clothing item" });
+            }
+            break;
         case 'PUT':
             try {
 
@@ -92,7 +101,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
                 res.status(500).json({ error: 'Error deleting clothing' });
             }
         default:
-            res.setHeader('Allow', ['PUT', 'PATCH', "DELETE"])
+            res.setHeader('Allow', ['PUT', 'PATCH', "DELETE", 'GET'])
             res.status(405).end(`Method ${method} Not Allowed`)
     }
 };
