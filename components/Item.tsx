@@ -15,6 +15,7 @@ const ClothingItem: React.FC<Clothing> = (clothing) => {
     const [brand, setBrand] = useState(clothing.brand);
     const [fit, setFit] = useState(clothing.fit)
     const [edited, setEdited] = useState(false)
+    const [deleted, setDeleted] = useState(false)
     const [showImageModal, setShowImageModal] = useState(false)
 
     const saveMutation = useMutation<AxiosResponse<any, any>, AxiosError<any, any>, Omit<Clothing, "image" | "id">>({
@@ -23,7 +24,13 @@ const ClothingItem: React.FC<Clothing> = (clothing) => {
             setEdited(false)
         }
     });
-
+    const deleteMutation = useMutation<AxiosResponse<any, any>, AxiosError<any, any>>({
+        mutationFn: (data) => axios.delete(`/api/wardrobe/${clothing.id}`
+        ).then(res => res.data),
+        onSuccess: () => {
+            setDeleted(true)
+        }
+    });
     const handleSave = () => {
         if (saveMutation.isLoading) return
         saveMutation.mutate({
@@ -35,6 +42,17 @@ const ClothingItem: React.FC<Clothing> = (clothing) => {
         });
     };
 
+    const handleDelete = () => {
+        if (deleteMutation.isLoading) return
+        if (confirm("Are you sure you want to delete")) {
+            deleteMutation.mutate()
+        }
+    }
+
+    if (deleted) {
+        return null
+    }
+
     return (
         <div id="cont" className="flex flex-col w-full shadow rounded-lg group items-center p-4 justify-center bg-white">
             {
@@ -42,16 +60,29 @@ const ClothingItem: React.FC<Clothing> = (clothing) => {
             }
             <div className="relative w-full mb-4 pt-[100%]">
                 <img src={clothing.image} id={clothing.id} alt={clothing.type} className="absolute top-0 left-0 w-full h-full w-mb-4 object-cover" />
-                <div id="edit" className="absolute top-0 left-0 right-0 w-full flex justify-between items-center opacity-0 group-hover:opacity-100">
-                    <button
-                        onClick={() => setShowImageModal(true)}
-                    >
-                        <AiOutlineEdit size={25} />
-                    </button>
-                    <div className="flex items-center">
-                        <input id="checked-checkbox" type="checkbox" value="" className="w-[18px] h-[18px] text-blue-600 accent-green-600 bg-gray-100 border-gray-300 rounded" />
-                    </div>
+                <button
+                    className="absolute top-0 left-0 p-1 bg-white rounded-br opacity-0 group-hover:opacity-100"
+                    type="button"
+                    onClick={() => setShowImageModal(true)}
+                >
+                    <AiOutlineEdit size={25} />
+                </button>
+                <div
+                    className="absolute pb-0 px-2 pt-1 top-0 right-0 bg-white rounded-bl opacity-0 group-hover:opacity-100"
+                >
+                    <input type="checkbox" value="" className="w-[18px] h-[18px] accent-green-600 bg-gray-100 border-gray-300 rounded" />
                 </div>
+                <button
+                    className="absolute bottom-0 right-0 z-10 p-1 bg-white rounded-tl opacity-0 group-hover:opacity-100 focus:outline-none"
+                    type="button"
+                    onClick={handleDelete}
+                >
+                    <svg className="w-6 h-6 text-gray-700" xmlns="http://www.w3.org/2000/svg" fill="none"
+                        viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                    </svg>
+                </button>
             </div>
             <div className="flex flex-col gap-2 w-full">
                 <div className="grid grid-cols-2 gap-4 w-full">
