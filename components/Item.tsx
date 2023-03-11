@@ -6,8 +6,6 @@ import { Clothing } from "../types";
 import { Input, Label, Select } from "./misc";
 import EditClothePicture from "./EditClothePicture";
 
-
-
 const ClothingItem: React.FC<Clothing> = (clothing) => {
     const [type, setType] = useState(clothing.type);
     const [description, setDescription] = useState(clothing.description);
