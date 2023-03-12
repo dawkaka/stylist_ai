@@ -28,7 +28,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
                 rules do not recommend two items of the same type: only one footwear, only one top and only one bottom
                
-                the response should be on json format {top: string?, bottom: string?, footwear:string?, accesories: string?, generalInfo: string}
+                the response should be on json format {items: string[], generalInfo: string}
+                items should be an array of selected items ids
                 general info should describe how the recommended items should be worn and why that recommendation
                 do not recommned clothing items that are not part of the clothing items provided eg: if there is no item of type accessory, leave the accesories field empty
                 Only include accessories if there neccessary and will compliment the outfit
@@ -42,8 +43,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                 });
 
                 const recommendations = response.data.choices
-
-                res.status(200).json(recommendations[0]);
+                let data = { items: [], generalInfo: "" }
+                if (recommendations[0].text) {
+                    data = JSON.parse(recommendations[0].text?.replace("Response:", "").trim())
+                }
+                const items = await prisma.clothes.findMany({ where: { id: { in: data.items } } })
+                res.status(200).json({ items, generalInfo: data.generalInfo });
             } catch (error) {
                 console.error(error);
                 res.status(500).json({ message: 'Internal server error' });
