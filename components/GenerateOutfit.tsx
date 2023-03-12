@@ -29,7 +29,7 @@ const GenerateOutif: React.FC<{ close: () => void }> = ({ close }) => {
     return (
         <div
             onClick={close}
-            className="absolute top-0 left-0 z-50 bg-[rgba(0,0,0,0.5)] w-full h-full flex flex-col items-center justify-center"
+            className="fixed top-0 left-0 z-50 bg-[rgba(0,0,0,0.5)] w-full h-full flex flex-col items-center justify-center"
         >
             <div
                 onClick={(e) => { e.stopPropagation() }}

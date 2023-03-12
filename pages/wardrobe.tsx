@@ -46,7 +46,7 @@ export default function Wardrobe({ user }: InferGetServerSidePropsType<typeof ge
     }
 
     return (
-        <div className="min-h-screen">
+        <div className="relative min-h-screen">
             <button data-drawer-target="default-sidebar" data-drawer-toggle="default-sidebar" aria-controls="default-sidebar" type="button" className="inline-flex items-center p-2 mt-2 ml-3 text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600">
                 <span className="sr-only">Open sidebar</span>
                 <svg className="w-6 h-6" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
@@ -72,13 +72,6 @@ export default function Wardrobe({ user }: InferGetServerSidePropsType<typeof ge
                             </p>
                         </div>
 
-                        <div
-                            role="button"
-                            onClick={() => setOpenAdd(true)}
-                            className="pointer w-full flex justify-between items-center  bg-green-500 text-white px-6 py-4 font-normal rounded-lg dark:text-white hover:bg-green-600">
-                            <span className="flex-1 whitespace-nowrap text-xl">Add clothes</span>
-                            <HiViewGridAdd size={30} />
-                        </div>
                         <div className="flex justify-center mt-16">
                             <button
                                 onClick={() => setOpenCreate(true)}
@@ -92,6 +85,13 @@ export default function Wardrobe({ user }: InferGetServerSidePropsType<typeof ge
                     </div>
                 </div>
             </aside>
+            <div
+                role="button"
+                onClick={() => setOpenAdd(true)}
+                className="fixed bottom-10 right-10 pointer z-10 flex justify-between items-center bg-green-500 text-white px-6 py-4 font-normal rounded-lg hover:bg-green-600">
+                <span className="flex-1 whitespace-nowrap text-xl">Add clothes</span>
+                <HiViewGridAdd size={30} />
+            </div>
             {
                 (!isError && !isLoading && clothes.length === 0) ? (
                     <div className="flex flex-col w-full items-center justify-center gap-8 pt-16">
