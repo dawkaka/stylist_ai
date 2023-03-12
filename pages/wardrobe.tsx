@@ -8,7 +8,7 @@ import ClothingItem from "@/components/Item";
 import { useInfiniteQuery } from "react-query";
 import axios from "axios";
 import { Clothing } from "@/types";
-import { Error, Loader } from "@/components/misc";
+import { Error, Label, Loader, Select } from "@/components/misc";
 import GenerateOutif from "@/components/GenerateOutfit";
 
 export default function Wardrobe({ user }: InferGetServerSidePropsType<typeof getServerSideProps>) {
@@ -118,21 +118,25 @@ export default function Wardrobe({ user }: InferGetServerSidePropsType<typeof ge
                         </button>
                     </div>
                 ) : (
-                    <div className="p-4 sm:ml-64 grid grid-cols-1 max-[600px]:grid-cols-1 max-[601px]:grid-cols-2 min-[850px]:grid-cols-1 min-[851px]:grid-cols-2 min-[1151px]:grid-cols-3 bg-gray-50 flex-wrap gap-4 sm:gap-10">
-                        {
-                            clothes.map((clothe, ind) => <ClothingItem
-                                key={ind}
-                                {...clothe}
-                            />)
-                        }
+                    <div>
+                        <div className="p-4 sm:ml-64 grid grid-cols-1 max-[600px]:grid-cols-1 max-[601px]:grid-cols-2 min-[850px]:grid-cols-1 min-[851px]:grid-cols-2 min-[1151px]:grid-cols-3 bg-gray-50 flex-wrap gap-4 sm:gap-10">
 
-                        {
-                            hasNextPage ? <Loader loadMore={() => fetchNextPage()} hasNext={hasNextPage} isFetching={isFetching} /> : null
-                        }
-                        {
-                            isError && <Error message={"Something went wrong"} />
-                        }
+                            {
+                                clothes.map((clothe, ind) => <ClothingItem
+                                    key={ind}
+                                    {...clothe}
+                                />)
+                            }
+
+                            {
+                                hasNextPage ? <Loader loadMore={() => fetchNextPage()} hasNext={hasNextPage} isFetching={isFetching} /> : null
+                            }
+                            {
+                                isError && <Error message={"Something went wrong"} />
+                            }
+                        </div>
                     </div>
+
                 )
             }
 

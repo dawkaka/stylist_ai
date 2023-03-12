@@ -13,19 +13,13 @@ const GenerateOutif: React.FC<{ close: () => void }> = ({ close }) => {
 
     const { data, isLoading, isFetching, isError, isSuccess } = useQuery({
         queryKey: occasion,
-        queryFn: () => axios.get(`/api/generate-outfit?occasion=${occasion}`).then(res => JSON.parse(res.data.text.replace("Response:", "").trim())),
+        queryFn: () => axios.get(`/api/generate-outfit?occasion=${occasion}`).then(res => res.data),
         enabled: step === 1,
         staleTime: Infinity
     })
     const generateOutift = () => {
         setStep(1)
     }
-
-    const topQuery = useQuery<Clothing>({ queryKey: ['wardrobe', data?.top], queryFn: () => axios.get(`/api/wardrobe/${data?.top}`).then(res => res.data), enabled: Boolean(data?.top) });
-    const bottomQuery = useQuery<Clothing>({ queryKey: ['wardrobe', data?.bottom], queryFn: () => axios.get(`/api/wardrobe/${data?.bottom}`).then(res => res.data), enabled: Boolean(data?.bottom) });
-    const footwearQuery = useQuery<Clothing>({ queryKey: ['wardrobe', data?.footwear], queryFn: () => axios.get(`/api/wardrobe/${data?.footwear}`).then(res => res.data), enabled: Boolean(data?.footwear) });
-    const accessoryQuery = useQuery<Clothing>({ queryKey: ['wardrobe', data?.accessory], queryFn: () => axios.get(`/api/wardrobe/${data?.accessory}`).then(res => res.data), enabled: Boolean(data?.accessory) });
-
     return (
         <div
             onClick={close}
@@ -102,20 +96,11 @@ const GenerateOutif: React.FC<{ close: () => void }> = ({ close }) => {
                                     )
                                 }
                                 <div className="flex flex-col gap-4 mt-4">
-                                    {topQuery.data && <h3 className="text-xl text-gray-900 font-semibold">✨Ai stylist recommendation✨</h3>}
+                                    {data && <h3 className="text-xl text-gray-900 font-semibold">✨Ai stylist recommendation✨</h3>}
                                     <p className="text-gray-800">{data?.generalInfo}</p>
                                     <div className="grid grid-cols-2 gap-10">
                                         {
-                                            topQuery.data && <RecommendedItem  {...topQuery.data} />
-                                        }
-                                        {
-                                            bottomQuery.data && <RecommendedItem   {...bottomQuery.data} />
-                                        }
-                                        {
-                                            footwearQuery.data && <RecommendedItem  {...footwearQuery.data} />
-                                        }
-                                        {
-                                            accessoryQuery.data && <RecommendedItem {...accessoryQuery.data} />
+                                            data && data.items.map((item: Clothing) => <RecommendedItem key={item.id} {...item} />)
                                         }
                                     </div>
                                 </div>
