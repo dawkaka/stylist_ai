@@ -3,7 +3,7 @@ import axios, { AxiosResponse } from "axios";
 import React, { useState } from "react";
 import { BiArrowBack } from "react-icons/bi"
 import { useQueries, useQuery, UseQueryResult } from "react-query";
-import ClothingItem from "./Item";
+import ClothingItem, { RecommendedItem } from "./Item";
 import { Error } from "./misc";
 
 
@@ -102,16 +102,20 @@ const GenerateOutif: React.FC<{ close: () => void }> = ({ close }) => {
                                     )
                                 }
                                 <div className="flex flex-col gap-4 mt-4">
-                                    <p className="text-xl text-gray-800">{data?.generalInfo}</p>
+                                    {topQuery.data && <h3 className="text-xl text-gray-900 font-semibold">✨Ai stylist recommendation✨</h3>}
+                                    <p className="text-gray-800">{data?.generalInfo}</p>
                                     <div className="grid grid-cols-2 gap-10">
                                         {
-                                            topQuery.data && <ClothingItem  {...topQuery.data} />
+                                            topQuery.data && <RecommendedItem  {...topQuery.data} />
                                         }
                                         {
-                                            bottomQuery.data && <ClothingItem  {...bottomQuery.data} />
+                                            bottomQuery.data && <RecommendedItem   {...bottomQuery.data} />
                                         }
                                         {
-                                            footwearQuery.data && <ClothingItem  {...footwearQuery.data} />
+                                            footwearQuery.data && <RecommendedItem  {...footwearQuery.data} />
+                                        }
+                                        {
+                                            accessoryQuery.data && <RecommendedItem {...accessoryQuery.data} />
                                         }
                                     </div>
                                 </div>

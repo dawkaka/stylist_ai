@@ -148,7 +148,7 @@ const ClothingItem: React.FC<Clothing> = (clothing) => {
                     >
                         <Label htmlFor={`brand-${clothing.id}`} label="Brand" />
                         <Input
-                            placeholder="e.g Gucci, Lacorste, Loui vuitton"
+                            placeholder="e.g Gucci, Lacorste, Louis vuitton"
                             id={`brand-${clothing.id}`}
                             type="text"
                             value={brand}
@@ -160,8 +160,7 @@ const ClothingItem: React.FC<Clothing> = (clothing) => {
                         />
                     </div>
                 </div>
-                <div className="flex flex-col h-8">
-
+                <div className="flex flex-col">
                     {
                         edited &&
                         <button
@@ -176,5 +175,76 @@ const ClothingItem: React.FC<Clothing> = (clothing) => {
         </div >
     );
 };
+
+export const RecommendedItem: React.FC<Clothing> = (clothing) => {
+    return (
+        <div id="cont" className="flex flex-col w-full shadow rounded-lg group items-center p-4 justify-center bg-white">
+            <div className="relative w-full mb-4 pt-[100%]">
+                <img src={clothing.image} id={clothing.id} alt={clothing.type} className="absolute top-0 left-0 w-full h-full w-mb-4 object-cover" />
+            </div>
+            <div className="flex flex-col gap-2 w-full">
+                <div className="grid grid-cols-2 gap-4 w-full">
+                    <div className="flex flex-col">
+                        <Label htmlFor={`type-${clothing.id}`} label="Type" />
+                        <input
+                            className="border rounded px-2 text-gray-700 outline-none focus:border-green-500"
+                            id={`type-${clothing.id}`}
+                            type="text"
+                            value={clothing.type}
+                            readOnly
+                        />
+                    </div>
+                    <div className="flex flex-col">
+                        <Label htmlFor={`fit-${clothing.id}`} label="Fit" />
+                        <input
+                            className="border rounded px-2 text-gray-700 outline-none focus:border-green-500"
+                            id={`fit-${clothing.id}`}
+                            type="text"
+                            value={clothing.fit}
+                            readOnly
+                        />
+                    </div>
+                </div>
+                <div className="flex flex-col">
+                    <Label htmlFor={`description-${clothing.id}`} label="Description" />
+                    <input
+                        className="border rounded px-2 text-gray-700 outline-none focus:border-green-500"
+                        id={`description-${clothing.id}`}
+                        type="text"
+                        value={clothing.description}
+                        readOnly
+                    />
+
+                </div>
+                <div className="grid grid-cols-2 gap-4 w-full">
+                    <div
+                        className="flex flex-col"
+                    >
+                        <Label htmlFor={`color-${clothing.id}`} label="Color" />
+                        <input
+                            className="border rounded px-2 text-gray-700 outline-none focus:border-green-500"
+                            id={`color-${clothing.id}`}
+                            type="text"
+                            value={clothing.color}
+                            readOnly
+                        />
+                    </div>
+                    <div
+                        className="flex flex-col"
+                    >
+                        <Label htmlFor={`brand-${clothing.id}`} label="Brand" />
+                        <input
+                            className="border rounded px-2 text-gray-700 outline-none focus:border-green-500"
+                            id={`brand-${clothing.id}`}
+                            type="text"
+                            value={clothing.brand}
+                            readOnly
+                        />
+                    </div>
+                </div>
+            </div>
+        </div >
+    )
+}
 
 export default ClothingItem;
