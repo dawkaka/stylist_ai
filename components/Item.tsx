@@ -107,7 +107,7 @@ const ClothingItem: React.FC<Clothing> = (clothing) => {
                                 setEdited(true)
                             }
                             }
-                            options={["Regular", "Relaxed", "Loose", "Tight", "Oversized",]}
+                            options={["Regular", "Relaxed", "Loose", "Tight", "Oversized"]}
                         />
                     </div>
                 </div>

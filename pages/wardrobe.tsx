@@ -10,6 +10,7 @@ import axios from "axios";
 import { Clothing } from "@/types";
 import { Error, Label, Loader, Select } from "@/components/misc";
 import GenerateOutif from "@/components/GenerateOutfit";
+import Filter from "@/components/Filter";
 
 export default function Wardrobe({ user }: InferGetServerSidePropsType<typeof getServerSideProps>) {
     const { image, name } = user
@@ -118,8 +119,9 @@ export default function Wardrobe({ user }: InferGetServerSidePropsType<typeof ge
                         </button>
                     </div>
                 ) : (
-                    <div>
-                        <div className="p-4 sm:ml-64 grid grid-cols-1 max-[600px]:grid-cols-1 max-[601px]:grid-cols-2 min-[850px]:grid-cols-1 min-[851px]:grid-cols-2 min-[1151px]:grid-cols-3 bg-gray-50 flex-wrap gap-4 sm:gap-10">
+                    <div className="p-4 sm:ml-64  bg-gray-50">
+                        <Filter />
+                        <div className="grid grid-cols-1 max-[600px]:grid-cols-1 max-[601px]:grid-cols-2 min-[850px]:grid-cols-1 min-[851px]:grid-cols-2 min-[1151px]:grid-cols-3 gap-4 sm:gap-10">
 
                             {
                                 clothes.map((clothe, ind) => <ClothingItem
