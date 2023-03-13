@@ -5,9 +5,9 @@ import { getServerSession } from "next-auth";
 import { HiViewGridAdd } from "react-icons/hi"
 import DragAndDrop from "@/components/AddClothes";
 import ClothingItem from "@/components/Item";
-import { useInfiniteQuery } from "react-query";
+import { useInfiniteQuery, useQuery, useQueryClient } from "react-query";
 import axios from "axios";
-import { Clothing } from "@/types";
+import { Clothing, Filter as FitlerType } from "@/types";
 import { Error, Label, Loader, Select } from "@/components/misc";
 import GenerateOutif from "@/components/GenerateOutfit";
 import Filter from "@/components/Filter";
@@ -16,7 +16,12 @@ export default function Wardrobe({ user }: InferGetServerSidePropsType<typeof ge
     const { image, name } = user
     const [openAdd, setOpenAdd] = useState(false)
     const [openCreate, setOpenCreate] = useState(false)
-    const fetchClothes = ({ pageParam = 0 }) => axios.get(`/api/wardrobe?page=${pageParam}`).then(res => res.data)
+    const [filter, setFilter] = useState<FitlerType>({ fit: "", color: "", brand: "", type: "" })
+    const queryClient = useQueryClient()
+
+    const fetchClothes = ({
+        pageParam = 0
+    }) => axios.get(`/api/wardrobe?page=${pageParam}&color=${filter.color}&type=${filter.type}&brand=${filter.brand}&fit=${filter.fit}`).then(res => res.data)
 
     const {
         data,
@@ -25,7 +30,8 @@ export default function Wardrobe({ user }: InferGetServerSidePropsType<typeof ge
         isError,
         isLoading,
         isFetching,
-    } = useInfiniteQuery(["wardrobe"], fetchClothes,
+        refetch
+    } = useInfiniteQuery("wardrobe", fetchClothes,
         {
             getNextPageParam: (lastPage) => {
                 if (lastPage) {
@@ -33,7 +39,7 @@ export default function Wardrobe({ user }: InferGetServerSidePropsType<typeof ge
                         return undefined
                     }
                 }
-                return lastPage.next
+                return lastPage.nextFetch
             },
         })
 
@@ -46,6 +52,16 @@ export default function Wardrobe({ user }: InferGetServerSidePropsType<typeof ge
         }
     }
 
+    const { data: filters } = useQuery({
+        queryKey: "filters",
+        queryFn: () => axios.get("/api/filters").then(res => res.data)
+    })
+
+    const handleFilter = (filter: FitlerType) => {
+        queryClient.invalidateQueries("wardrobe")
+        clothes = []
+        setFilter(filter)
+    }
     return (
         <div className="relative min-h-screen">
             <button data-drawer-target="default-sidebar" data-drawer-toggle="default-sidebar" aria-controls="default-sidebar" type="button" className="inline-flex items-center p-2 mt-2 ml-3 text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600">
@@ -120,7 +136,7 @@ export default function Wardrobe({ user }: InferGetServerSidePropsType<typeof ge
                     </div>
                 ) : (
                     <div className="p-4 sm:ml-64  bg-gray-50">
-                        <Filter />
+                        {filters && <Filter filters={filters} updateFilter={handleFilter} filter={filter} />}
                         <div className="grid grid-cols-1 max-[600px]:grid-cols-1 max-[601px]:grid-cols-2 min-[850px]:grid-cols-1 min-[851px]:grid-cols-2 min-[1151px]:grid-cols-3 gap-4 sm:gap-10">
 
                             {

@@ -20,3 +20,10 @@ export interface PaginatedResult {
     nextFetch: number
     isEnd: boolean
 };
+
+export interface Filter {
+    type: string,
+    color: string,
+    brand: string,
+    fit: string
+}

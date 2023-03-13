@@ -12,13 +12,27 @@ const handler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse
     }
     switch (req.method) {
         case "GET":
-            const skip = parseInt(req.query.skip as string) || 0;
+            const { color, brand, fit, type } = req.query
+            const skip = parseInt(req.query.page as string)
             const { user } = session;
             const userId = user.id;
             const limit = 10
+            const filter: any = { userId }
+            if (color) {
+                filter.color = color
+            }
+            if (brand) {
+                filter.brand = brand
+            }
+            if (fit) {
+                filter.fit = fit
+            }
+            if (type) {
+                filter.type = type
+            }
             try {
                 const items = await prisma.clothes.findMany({
-                    where: { userId },
+                    where: filter,
                     select: { id: true, image: true, brand: true, color: true, fit: true, type: true, description: true },
                     orderBy: { updatedAt: 'desc' },
                     skip,
