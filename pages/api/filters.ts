@@ -23,10 +23,10 @@ const handler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse
                 });
 
                 const filters = {
-                    color: Array.from(new Set(distinctValues.map((item) => item.color))),
-                    brand: Array.from(new Set(distinctValues.map((item) => item.brand))),
-                    fit: Array.from(new Set(distinctValues.map((item) => item.fit))),
-                    type: Array.from(new Set(distinctValues.map((item) => item.type))),
+                    color: Array.from(new Set(distinctValues.map((item) => item.color).filter(v => v !== ""))),
+                    brand: Array.from(new Set(distinctValues.map((item) => item.brand).filter(v => v !== ""))),
+                    fit: Array.from(new Set(distinctValues.map((item) => item.fit).filter(v => v !== ""))),
+                    type: Array.from(new Set(distinctValues.map((item) => item.type).filter(v => v !== ""))),
                 };
                 res.status(200).json(filters);
             } catch (err) {

@@ -18,6 +18,7 @@ export default function Wardrobe({ user }: InferGetServerSidePropsType<typeof ge
     const [openCreate, setOpenCreate] = useState(false)
     const [filter, setFilter] = useState<FitlerType>({ fit: "", color: "", brand: "", type: "" })
     const queryClient = useQueryClient()
+    const noFilter = Object.values(filter).every(v => v === "")
 
     const fetchClothes = ({
         pageParam = 0
@@ -41,7 +42,8 @@ export default function Wardrobe({ user }: InferGetServerSidePropsType<typeof ge
                 }
                 return lastPage.nextFetch
             },
-        })
+        }
+    )
 
     let clothes: Clothing[] = []
     if (data && data.pages) {
@@ -58,9 +60,8 @@ export default function Wardrobe({ user }: InferGetServerSidePropsType<typeof ge
     })
 
     const handleFilter = (filter: FitlerType) => {
-        queryClient.invalidateQueries("wardrobe")
-        clothes = []
         setFilter(filter)
+        setTimeout(() => refetch(), 1)
     }
     return (
         <div className="relative min-h-screen">
@@ -110,7 +111,7 @@ export default function Wardrobe({ user }: InferGetServerSidePropsType<typeof ge
                 <HiViewGridAdd size={30} />
             </div>
             {
-                (!isError && !isLoading && clothes.length === 0) ? (
+                (!isError && !isLoading && clothes.length === 0 && noFilter) ? (
                     <div className="flex flex-col w-full items-center justify-center gap-8 pt-16">
                         <div className="flex flex-col items-center gap-2">
                             <h4 className="font-bold text-3xl text-[var(--accents-8)] text-center">Your Wardrobe is Empty</h4>
@@ -141,7 +142,7 @@ export default function Wardrobe({ user }: InferGetServerSidePropsType<typeof ge
 
                             {
                                 clothes.map((clothe, ind) => <ClothingItem
-                                    key={ind}
+                                    key={clothe.id}
                                     {...clothe}
                                 />)
                             }
