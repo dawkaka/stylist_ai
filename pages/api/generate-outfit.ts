@@ -20,17 +20,31 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         case "GET":
             try {
                 const { occasion } = req.query;
-                const clothes = await prisma.clothes.findMany({ where: { userId: userId } });
-                const clothing = JSON.stringify(clothes)
+                let clothes = await prisma.clothes.findMany({ where: { userId: userId } });
+                clothes = clothes.filter(v => {
+                    return v.type !== "" && v.description !== "" && v.color !== ""
+                })
+                const clothing = JSON.stringify(clothes.map(cloth => {
+                    return {
+                        id: cloth.id,
+                        type: cloth.type,
+                        color: cloth.color,
+                        brand: cloth.brand,
+                        description: cloth.description,
+                        fit: cloth.fit
+                    }
+                }))
+
                 const prompt = `Pick clothing recommendations from this list of clothing items only: ${clothing} 
                 that is most suitable for the occasion 
                 Some context about the occasion: ${occasion}
 
-                rules do not recommend two items of the same type: only one footwear, only one top and only one bottom
-               
+                Rules:
+                Do not recommend two items of the same type. eg: only one Footwear, only one Top and only one Bottom
+                Do not include ambigous items eg: item with type Top and item with type dress if it's neccessary explain how it should be worn in generalInfo
                 the response should be on json format {items: string[], generalInfo: string}
                 items should be an array of selected items ids
-                general info should describe how the recommended items should be worn and why that recommendation
+                general info should describe how the recommended items should be worn and why that recommendation.
                 do not recommned clothing items that are not part of the clothing items provided eg: if there is no item of type accessory, leave the accesories field empty
                 Only include accessories if there neccessary and will compliment the outfit
                 `
@@ -39,11 +53,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                     model: "text-davinci-003",
                     prompt: prompt,
                     temperature: 0,
-                    max_tokens: 1024,
+                    max_tokens: clothes.length * 90,
                 });
 
                 const recommendations = response.data.choices
                 let data = { items: [], generalInfo: "" }
+                console.log(recommendations)
                 if (recommendations[0].text) {
                     data = JSON.parse(recommendations[0].text?.replace("Response:", "").trim())
                 }

@@ -6,7 +6,7 @@ import { Clothing } from "../types";
 import { Input, Label, Select } from "./misc";
 import EditClothePicture from "./EditClothePicture";
 
-const ClothingItem: React.FC<Clothing> = (clothing) => {
+const ClothingItem: React.FC<Clothing & { selected: boolean, select: () => void }> = (clothing) => {
     const [type, setType] = useState(clothing.type);
     const [description, setDescription] = useState(clothing.description);
     const [color, setColor] = useState(clothing.color);
@@ -68,7 +68,14 @@ const ClothingItem: React.FC<Clothing> = (clothing) => {
                 <div
                     className="absolute pb-0 px-2 pt-1 top-0 right-0 bg-white rounded-bl opacity-0 group-hover:opacity-100"
                 >
-                    <input type="checkbox" value="" className="w-[18px] h-[18px] accent-green-600 bg-gray-100 border-gray-300 rounded" />
+                    <input
+                        type="checkbox"
+                        onChange={(e) => {
+                            clothing.select()
+                        }} value=""
+                        checked={clothing.selected}
+                        className="w-[18px] h-[18px] accent-green-600 bg-gray-100 border-gray-300 rounded"
+                    />
                 </div>
                 <button
                     className="absolute bottom-0 right-0 z-10 p-1 bg-white rounded-tl opacity-0 group-hover:opacity-100 focus:outline-none"

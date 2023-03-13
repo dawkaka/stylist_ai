@@ -17,7 +17,7 @@ export default function Wardrobe({ user }: InferGetServerSidePropsType<typeof ge
     const [openAdd, setOpenAdd] = useState(false)
     const [openCreate, setOpenCreate] = useState(false)
     const [filter, setFilter] = useState<FitlerType>({ fit: "", color: "", brand: "", type: "" })
-    const queryClient = useQueryClient()
+    const [selected, setSelected] = useState<string[]>([])
     const noFilter = Object.values(filter).every(v => v === "")
 
     const fetchClothes = ({
@@ -63,6 +63,14 @@ export default function Wardrobe({ user }: InferGetServerSidePropsType<typeof ge
         setFilter(filter)
         setTimeout(() => refetch(), 1)
     }
+    const handleSelect = (id: string) => {
+        if (selected.includes(id)) {
+            setSelected(selected.filter(val => val !== id))
+        } else {
+            setSelected([...selected, id])
+        }
+    }
+
     return (
         <div className="relative min-h-screen">
             <button data-drawer-target="default-sidebar" data-drawer-toggle="default-sidebar" aria-controls="default-sidebar" type="button" className="inline-flex items-center p-2 mt-2 ml-3 text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600">
@@ -143,6 +151,8 @@ export default function Wardrobe({ user }: InferGetServerSidePropsType<typeof ge
                             {
                                 clothes.map((clothe, ind) => <ClothingItem
                                     key={clothe.id}
+                                    selected={selected.includes(clothe.id)}
+                                    select={() => handleSelect(clothe.id)}
                                     {...clothe}
                                 />)
                             }
@@ -160,7 +170,7 @@ export default function Wardrobe({ user }: InferGetServerSidePropsType<typeof ge
             }
 
             {openAdd && <DragAndDrop close={() => setOpenAdd(false)} />}
-            {openCreate && <GenerateOutif close={() => setOpenCreate(false)} />}
+            {openCreate && <GenerateOutif close={() => setOpenCreate(false)} selection={selected} />}
 
         </div>
     )

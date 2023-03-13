@@ -7,16 +7,18 @@ import ClothingItem, { RecommendedItem } from "./Item";
 import { Error } from "./misc";
 
 
-const GenerateOutif: React.FC<{ close: () => void }> = ({ close }) => {
+const GenerateOutif: React.FC<{ close: () => void, selection: string[] }> = ({ close, selection }) => {
     const [step, setStep] = useState(0)
     const [occasion, setOccasion] = useState("")
+    const [target, setTarget] = useState<"all" | "sel">("all")
 
-    const { data, isLoading, isFetching, isError, isSuccess } = useQuery({
+    const { data, isLoading, error, isFetching, isError, isSuccess } = useQuery({
         queryKey: occasion,
         queryFn: () => axios.get(`/api/generate-outfit?occasion=${occasion}`).then(res => res.data),
         enabled: step === 1,
         staleTime: Infinity
     })
+
     const generateOutift = () => {
         setStep(1)
     }
@@ -50,6 +52,26 @@ const GenerateOutif: React.FC<{ close: () => void }> = ({ close }) => {
                     {
                         step === 0 && (
                             <div className="flex flex-col p-4">
+                                <div className="flex gap-10 justify-center mb-4">
+                                    <div className="flex gap-2 text-gray-700">
+                                        <label htmlFor="all" >Entire Wardrobe</label>
+                                        <input id="all" type="checkbox" checked={target === "all"} onChange={(e) => {
+                                            if (target === "all") {
+                                                return
+                                            }
+                                            setTarget("all")
+                                        }} />
+                                    </div>
+                                    <div className="flex gap-2 text-gray-700">
+                                        <label htmlFor="sel">Selection: {selection.length} items</label>
+                                        <input id="sel" type="checkbox" checked={target === "sel"} onChange={(e) => {
+                                            if (target === "sel") {
+                                                return
+                                            }
+                                            setTarget("sel")
+                                        }} />
+                                    </div>
+                                </div>
                                 <label className="text-gray-600">What's the occasion?</label>
                                 <input
                                     className="border rounded px-3 py-2 text-lg"
