@@ -2,7 +2,7 @@ import { Clothing } from "@/types";
 import axios, { AxiosResponse } from "axios";
 import React, { useState } from "react";
 import { BiArrowBack } from "react-icons/bi"
-import { useQueries, useQuery, UseQueryResult } from "react-query";
+import { useMutation, useQueries, useQuery, UseQueryResult } from "react-query";
 import ClothingItem, { RecommendedItem } from "./Item";
 import { Error } from "./misc";
 
@@ -12,15 +12,13 @@ const GenerateOutif: React.FC<{ close: () => void, selection: string[] }> = ({ c
     const [occasion, setOccasion] = useState("")
     const [target, setTarget] = useState<"all" | "sel">("all")
 
-    const { data, isLoading, error, isFetching, isError, isSuccess } = useQuery({
-        queryKey: occasion,
-        queryFn: () => axios.get(`/api/generate-outfit?occasion=${occasion}`).then(res => res.data),
-        enabled: step === 1,
-        staleTime: Infinity
+    const { data, isLoading, isError, mutate } = useMutation({
+        mutationFn: () => axios.post(`/api/generate-outfit`, { occasion, selection: target === "sel" ? selection : [] }).then(res => res.data),
     })
 
     const generateOutift = () => {
         setStep(1)
+        mutate()
     }
     return (
         <div
@@ -44,7 +42,8 @@ const GenerateOutif: React.FC<{ close: () => void, selection: string[] }> = ({ c
                                 className="button px-4 py-1 shadow  rounded-lg"
                                 onClick={generateOutift}
                             >
-                                Generate</button> :
+                                Generate
+                            </button> :
                             <span>{' '}</span>
                     }
                 </div>
@@ -96,7 +95,7 @@ const GenerateOutif: React.FC<{ close: () => void, selection: string[] }> = ({ c
                                     isError && <Error message="Something went wrong" />
                                 }
                                 {
-                                    (isLoading || isFetching) && (
+                                    (isLoading) && (
                                         <>
                                             <p className="my-4 text-center text-gray-800">Generating outfit...</p>
                                             <div className="rounded-md p-4 max-w-sm w-full mx-auto">

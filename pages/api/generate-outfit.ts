@@ -17,13 +17,21 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const { method } = req
     const userId = session.user.id
     switch (method) {
-        case "GET":
+        case "POST":
             try {
-                const { occasion } = req.query;
-                let clothes = await prisma.clothes.findMany({ where: { userId: userId } });
-                clothes = clothes.filter(v => {
-                    return v.type !== "" && v.description !== "" && v.color !== ""
-                })
+                const { occasion, selection } = req.body;
+                const hasSelection = Array.isArray(selection) && selection.length > 0
+                let clothes
+                if (hasSelection) {
+                    clothes = await prisma.clothes.findMany({ where: { id: { in: selection } } });
+                } else {
+                    clothes = await prisma.clothes.findMany({ where: { userId } })
+                }
+                if (!hasSelection) {
+                    clothes = clothes.filter(v => {
+                        return v.type !== "" && v.description !== "" && v.color !== ""
+                    })
+                }
                 const clothing = JSON.stringify(clothes.map(cloth => {
                     return {
                         id: cloth.id,
@@ -34,6 +42,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                         fit: cloth.fit
                     }
                 }))
+
+                console.log(clothes)
 
                 const prompt = `Pick clothing recommendations from this list of clothing items only: ${clothing} 
                 that is most suitable for the occasion 
@@ -55,7 +65,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                     temperature: 0,
                     max_tokens: clothes.length * 90,
                 });
-
                 const recommendations = response.data.choices
                 let data = { items: [], generalInfo: "" }
                 console.log(recommendations)
@@ -65,13 +74,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                 const items = await prisma.clothes.findMany({ where: { id: { in: data.items } } })
                 res.status(200).json({ items, generalInfo: data.generalInfo });
             } catch (error) {
-                console.error(error);
                 res.status(500).json({ message: 'Internal server error' });
             }
             break;
 
         default:
-            res.setHeader('Allow', ['GET'])
+            res.setHeader('Allow', ['POST'])
             res.status(405).end(`Method ${method} Not Allowed`)
             break;
     }
