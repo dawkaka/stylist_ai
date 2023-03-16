@@ -44,16 +44,15 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                 }))
 
                 const prompt = `Pick clothing recommendations from this list of clothing items only: ${clothing} 
-                that is most suitable for the occasion 
+                that is most suitable for the occasion.
                 Some context about the occasion: ${occasion}
-                rules do not recommend two items of the same type: only one footwear, only one top and only one bottom
                 the response should be on json format {items: string[], generalInfo: string}
-                items should be an array of selected items ids
+                the chosen items should make up a single outfit.
+                items should be an array of selected items ids.
                 general info should describe how the recommended items should be worn and why that recommendation
                 do not recommned clothing items that are not part of the clothing items provided eg: if there is no item of type accessory, leave the accesories field empty
                 Only include accessories if there neccessary and will compliment the outfit
                 `
-
                 const response = await openai.createCompletion({
                     model: "text-davinci-003",
                     prompt: prompt,
@@ -62,7 +61,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                 });
                 const recommendations = response.data.choices
                 let data = { items: [], generalInfo: "" }
-                console.log(recommendations)
                 if (recommendations[0].text) {
                     data = JSON.parse(recommendations[0].text?.replace("Response:", "").trim())
                 }
