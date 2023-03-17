@@ -58,17 +58,17 @@ export default async function handler(
   const [image] = await client.imageProperties({ image: { source: { imageUri: "https://cf.shopee.ph/file/b12509df5340bbd6bcfffa2ad48f3110" } } });
 
   // Detect labels in the image
-  const [result] = await client.objectLocalization({
-    image: { source: { imageUri: "https://assets.vogue.com/photos/6303e998bac6100a6d4cf022/1:1/w_2667,h_2667,c_limit/slide_20.jpg" } },
+  // const [result] = await client.objectLocalization({
+  //   image: { source: { imageUri: "https://assets.vogue.com/photos/6303e998bac6100a6d4cf022/1:1/w_2667,h_2667,c_limit/slide_20.jpg" } },
 
-  });
-  const objects = result.localizedObjectAnnotations;
+  // });
+  // const objects = result.localizedObjectAnnotations;
 
   // Filter the detected objects to only include clothing
-  console.log(objects)
-  objects?.forEach((obj) =>
-    console.log(obj, obj.boundingPoly?.normalizedVertices)
-  );
+  // console.log(objects)
+  // objects?.forEach((obj) =>
+  //   console.log(obj, obj.boundingPoly?.normalizedVertices)
+  // );
 
   // Extract information about the clothing items
 
@@ -82,5 +82,5 @@ export default async function handler(
 
   // Call getProductDetails with path to your image file
 
-  res.status(200).json({ name: 'John Doe', session: objects })
+  res.status(200).json({ name: 'John Doe' })
 }
