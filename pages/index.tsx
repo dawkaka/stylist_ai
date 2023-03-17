@@ -1,6 +1,7 @@
 import Head from 'next/head'
 import Image from 'next/image'
 import { Inter } from 'next/font/google'
+import Link from "next/link"
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -26,8 +27,9 @@ export default function Home() {
             <h2 className="mt-4 text-lg font-normal leading-7 text-gray-700 sm:text-xl lg:mx-auto lg:max-w-3xl xl:text-2xl xl:leading-9"> Have your entire wardrobe in one place and let our AI stylist recommend outfits for you. Say goodbye to the hassle of choosing what to wear.</h2>
           </div>
           <div className="mt-8 flex flex-row sm:items-center justify-center lg:mt-10">
-            <a href="/#showcase" className="inline-flex h-12 items-center bg-green-500 text-white justify-center rounded-xl border  px-6 py-2.5 text-base font-semibold transition-all duration-200 hover:border-green-700"
-              role="button">Get started for free</a>
+            <Link href="/auth/signin"
+              className="inline-flex h-12 items-center bg-green-500 text-white justify-center rounded-xl border  px-6 py-2.5 text-base font-semibold transition-all duration-200 hover:border-green-700"
+            >Get started for free</Link>
           </div>
           <div className="mx-auto mt-8 max-w-xs md:flex md:max-w-lg md:flex-col md:items-center md:justify-center md:space-y-4 lg:mt-12">
             <div className="flex shrink-0 justify-center -space-x-3 overflow-hidden">

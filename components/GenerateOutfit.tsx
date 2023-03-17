@@ -71,7 +71,7 @@ const GenerateOutif: React.FC<{ close: () => void, selection: string[] }> = ({ c
                                         }} />
                                     </div>
                                 </div>
-                                <label className="text-gray-600">What's the occasion?</label>
+                                <label className="text-gray-600">What is the occasion?</label>
                                 <input
                                     className="border rounded px-3 py-2 text-lg"
                                     placeholder="eg. An outfit to a wedding"

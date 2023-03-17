@@ -124,7 +124,7 @@ export default function Wardrobe({ user }: InferGetServerSidePropsType<typeof ge
                         <div className="flex flex-col items-center gap-2">
                             <h4 className="font-bold text-3xl text-[var(--accents-8)] text-center">Your Wardrobe is Empty</h4>
                             <p className="max-w-[400px] text-center text-[var(--accents-6)]">
-                                Add more clothes to your wardrobe and they'll appear here!
+                                Add more clothes to your wardrobe and they&aposll appear here!
                             </p>
                         </div>
                         <button
