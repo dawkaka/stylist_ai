@@ -17,7 +17,7 @@ export default function Page() {
                     <h2 className="mt-8">How We Use Your Personal Information</h2>
                     <p>
                         Your use your name to help people identify you and your email as a unique identify for signin purposes.
-                        We may also use your email to send you notifications daily when it's time for your to answer your daily questions so you don't forget, you can unsubscribe any time.
+                        We may also use your email to send you notifications daily when it&apos;s time for your to answer your daily questions so you don&apos;t forget, you can unsubscribe any time.
                     </p>
 
                     <h2 className="mt-8">Sharing Your Personal Information</h2>
@@ -32,7 +32,7 @@ export default function Page() {
                     <p>
                         We take appropriate measures to protect your personal information from unauthorized access, alteration, disclosure, or destruction.
                         However, please be aware that no security measures can guarantee absolute protection.
-                        Since we are using google for our auth services you wont' have to worry about your password getting leaked from us.
+                        Since we are using google for our auth services you wont&apos; have to worry about your password getting leaked from us.
                     </p>
 
                     <h2 className="mt-8">Changes to This Privacy Policy</h2>

@@ -6,7 +6,7 @@ export default function Page() {
                 <h1 className="text-3xl font-extrabold text-gray-900 mb-6">Terms of Service</h1>
 
                 <div className="prose">
-                    <p>Welcome to Virtual Wardrobe ("we," "us," "our"). By accessing or using the Service, you agree to be bound by these Terms of Service and all applicable laws and regulations. If you do not agree with these Terms of Service, you are not permitted to access or use the Service.</p>
+                    <p>Welcome to Virtual Wardrobe (we, us, our). By accessing or using the Service, you agree to be bound by these Terms of Service and all applicable laws and regulations. If you do not agree with these Terms of Service, you are not permitted to access or use the Service.</p>
 
                     <h2 className="mt-8">Description of Service</h2>
                     <p>The Service provides couples with five questions daily to help them know each other better. We reserve the right to modify or discontinue the Service at any time without notice.</p>
