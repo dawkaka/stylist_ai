@@ -18,12 +18,7 @@ export default function SignIn({ providers }: InferGetServerSidePropsType<typeof
                 </div>
                 <div className="flex gap-4 flex-col w-full">
                     {Object.values(providers).map((provider) => (
-                        <>
-                            <Provider key={provider.name} signIn={() => signIn(provider.id)} name={provider.name} />
-                            <Provider key={provider.name} signIn={() => signIn(provider.id)} name={"Twitter"} />
-                            <Provider key={provider.name} signIn={() => signIn(provider.id)} name={"Facebook"} />
-                        </>
-
+                        <Provider key={provider.name} signIn={() => signIn(provider.id)} name={provider.name} />
                     ))}
                 </div>
             </main>
