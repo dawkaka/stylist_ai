@@ -24,7 +24,7 @@ export default function Home() {
         <div className="relative mx-auto max-w-8xl px-4 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-8xl text-center lg:max-w-4xl">
             <h1 className="text-4xl font-bold tracking-tight text-gray-800 sm:text-6xl xl:text-7xl">Virtual Wardrobe And <span className="text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-blue-500">Ai Stylist</span></h1>
-            <h2 className="mt-4 text-lg font-normal leading-7 text-gray-700 sm:text-xl lg:mx-auto lg:max-w-3xl xl:text-2xl xl:leading-9"> Have your entire wardrobe in one place and let our AI stylist recommend outfits for you. Say goodbye to the hassle of choosing what to wear.</h2>
+            <h2 className="mt-4 text-lg font-normal leading-7 text-gray-700 sm:text-xl lg:mx-auto lg:max-w-3xl xl:text-2xl xl:leading-9">Have your entire wardrobe in one place and let our AI stylist recommend outfits for you. Say goodbye to the hassle of choosing what to wear.</h2>
           </div>
           <div className="mt-8 flex flex-row sm:items-center justify-center lg:mt-10">
             <Link href="/auth/signin"
