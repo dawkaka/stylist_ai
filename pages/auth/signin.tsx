@@ -29,7 +29,6 @@ export default function SignIn({ providers }: InferGetServerSidePropsType<typeof
 
 function Provider({ signIn, name }: { signIn: () => void, name: string }) {
     let icon = <FcGoogle size={25} />
-    let color = ""
     switch (name) {
         case "Twitter":
             icon = <AiOutlineTwitter color="#1DA1F2" size={25} />
