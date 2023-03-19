@@ -43,15 +43,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                     }
                 }))
 
-                const prompt = `Pick clothing recommendations from this list of clothing items only: ${clothing} 
-                that is most suitable for the occasion.
-                Some context about the occasion: ${occasion}
-                the response should be on json format {items: string[], generalInfo: string}
-                the chosen items should make up a single outfit.
-                items should be an array of selected items ids.
-                general info should describe how the recommended items should be worn and why that recommendation
-                do not recommned clothing items that are not part of the clothing items provided eg: if there is no item of type accessory, leave the accesories field empty
-                Only include accessories if there neccessary and will compliment the outfit
+                const prompt = `
+                Using your wardrobe, please provide recommendations for an outfit suitable for the following occasion: ${occasion}. Your wardrobe includes the following clothing items: ${clothing}. Please provide your recommendations in JSON format, including an array of selected item IDs and a general description of how the items should be worn and why they were chosen. Your recommendations should only include items from the provided wardrobe and should comprise a single outfit. Please do not include accessories unless they are necessary and will complement the outfit.
                 `
                 const response = await openai.createCompletion({
                     model: "text-davinci-003",
@@ -60,12 +53,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                     max_tokens: clothes.length * 90,
                 });
                 const recommendations = response.data.choices
-                let data = { items: [], generalInfo: "" }
+                let data = { selectedItems: [], description: "" }
                 if (recommendations[0].text) {
                     data = JSON.parse(recommendations[0].text?.replace("Response:", "").trim())
                 }
-                const items = await prisma.clothes.findMany({ where: { id: { in: data.items } } })
-                res.status(200).json({ items, generalInfo: data.generalInfo });
+                const items = await prisma.clothes.findMany({ where: { id: { in: data.selectedItems } } })
+                res.status(200).json({ items, generalInfo: data.description });
             } catch (error) {
                 res.status(500).json({ message: 'Internal server error' });
             }
