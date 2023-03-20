@@ -78,6 +78,9 @@ export const Input: React.FC<{ onChange: (e: ChangeEvent<HTMLInputElement>) => v
     return (
         <input
             className="border py-1 rounded px-2 text-gray-600 outline-none focus:border-green-500"
+            style={{
+                borderColor: value === "" ? "tomato" : ""
+            }}
             type={type}
             value={value}
             id={id}
