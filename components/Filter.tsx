@@ -10,8 +10,7 @@ export default function Filter({ filters, filter, updateFilter }: { filter: Filt
     const val = filter
     return (
         <div className="flex items-center justify-center gap-10 mb-10 py-4">
-            <h4 className="text-gray-900 font-bold">Filter:</h4>
-            <div className="flex gap-4">
+            <div className="flex flex-wrap gap-4">
                 <Select
                     id="Type"
                     onChange={(e) => {
