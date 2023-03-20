@@ -101,7 +101,7 @@ export default function Wardrobe({ user }: InferGetServerSidePropsType<typeof ge
                         <div className="flex justify-center mt-16">
                             <button
                                 onClick={() => setOpenCreate(true)}
-                                className="rounded-full bg-green-500 px-4 py-2 flex items-center gap-2 shadow"
+                                className="rounded bg-green-500 px-4 py-2 flex items-center gap-2 shadow"
                             >
                                 <span className="text-xl text-white">Generate</span>
                                 <span className="text-2xl">🪄</span>
@@ -116,7 +116,14 @@ export default function Wardrobe({ user }: InferGetServerSidePropsType<typeof ge
                 onClick={() => setOpenAdd(true)}
                 className="fixed bottom-10 right-10 pointer z-10 flex justify-between items-center bg-green-500 text-white px-6 py-4 font-normal rounded-lg hover:bg-green-600">
                 <span className="flex-1 whitespace-nowrap text-xl">Add clothes</span>
-                <HiViewGridAdd size={30} />
+                <HiViewGridAdd size={30} className="hidden sm:visible" />
+            </div>
+            <div
+                role="button"
+                onClick={() => setOpenCreate(true)}
+                className="fixed top-10 right-10 pointer z-10 flex justify-between items-center bg-green-500 sm:hidden text-white px-4 py-2 font-normal rounded-lg hover:bg-green-600">
+                <span className="text-xl text-white">Generate</span>
+                <span className="text-2xl">🪄</span>
             </div>
             {
                 (!isError && !isLoading && clothes.length === 0 && noFilter) ? (

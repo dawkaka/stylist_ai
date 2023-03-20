@@ -27,7 +27,7 @@ const GenerateOutif: React.FC<{ close: () => void, selection: string[] }> = ({ c
         >
             <div
                 onClick={(e) => { e.stopPropagation() }}
-                className="bg-white pt-4 w-full md:w-[min(90%,600px)] rounded-lg overflow-y-auto shadow-lg mt-[-20px]"
+                className="bg-white pt-4 w-[min(90%,600px)] rounded-lg overflow-y-auto shadow-lg mt-[-20px]"
             >
                 <div className="sticky top-0 flex w-full px-4 py-2 border-b items-center justify-between">
 

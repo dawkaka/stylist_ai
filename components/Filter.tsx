@@ -1,5 +1,4 @@
 import { Filter as FilterType } from "@/types";
-import { useReducer, useState } from "react";
 import { Select } from "./misc";
 
 export default function Filter({ filters, filter, updateFilter }: { filter: FilterType, updateFilter: (filter: FilterType) => void, filters: { color: string[], brand: string[], fit: string[], type: string[] } }) {
