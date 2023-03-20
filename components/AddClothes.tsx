@@ -70,7 +70,7 @@ const DragAndDrop: React.FC<{ close: () => void }> = ({ close }) => {
         >
             <div
                 onClick={(e) => { e.stopPropagation() }}
-                className="bg-white p-4 w-full md:w-[80%] sm:p-10 overflow-y-auto shadow-lg m-4 sm:m-10 h-[90vh] sm:h-[80vh]"
+                className="bg-white p-4 w-full w-[80%] sm:p-10 overflow-y-auto shadow-lg m-4 sm:m-10 h-[90vh] sm:h-[80vh]"
             >
                 <div
                     className={`relative p-4 border border-dashed ${highlight ? "border-blue-400 ring-4 ring-inset" : "border-gray-200"}`}
