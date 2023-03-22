@@ -73,12 +73,12 @@ export default function Wardrobe({ user }: InferGetServerSidePropsType<typeof ge
 
     return (
         <div className="relative min-h-screen">
-            <button data-drawer-target="default-sidebar" data-drawer-toggle="default-sidebar" aria-controls="default-sidebar" type="button" className="inline-flex items-center p-2 mt-2 ml-3 text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600">
+            {/* <button data-drawer-target="default-sidebar" data-drawer-toggle="default-sidebar" aria-controls="default-sidebar" type="button" className="inline-flex items-center p-2 mt-2 ml-3 text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600">
                 <span className="sr-only">Open sidebar</span>
                 <svg className="w-6 h-6" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                     <path clip-rule="evenodd" fill-rule="evenodd" d="M2 4.75A.75.75 0 012.75 4h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 4.75zm0 10.5a.75.75 0 01.75-.75h7.5a.75.75 0 010 1.5h-7.5a.75.75 0 01-.75-.75zM2 10a.75.75 0 01.75-.75h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 10z"></path>
                 </svg>
-            </button>
+            </button> */}
 
             <aside id="default-sidebar" className="fixed top-0 left-0 border-r z-40 w-64 h-screen transition-transform -translate-x-full sm:translate-x-0" aria-label="Sidebar">
                 <div className="w-full h-full px-3 py-4 overflow-y-auto bg-gray-50 dark:bg-gray-800">
@@ -111,20 +111,23 @@ export default function Wardrobe({ user }: InferGetServerSidePropsType<typeof ge
                     </div>
                 </div>
             </aside>
-            <div
-                role="button"
-                onClick={() => setOpenAdd(true)}
-                className="fixed bottom-10 right-10 pointer z-10 flex justify-between items-center bg-green-500 text-white px-6 py-4 font-normal rounded-lg hover:bg-green-600">
-                <span className="flex-1 whitespace-nowrap text-xl">Add clothes</span>
-                <HiViewGridAdd size={30} className="hidden sm:visible" />
+            <div className="fixed bottom-4 z-10 flex px-4 justify-between w-full">
+                <div
+                    role="button"
+                    onClick={() => setOpenAdd(true)}
+                    className="pointer flex justify-between px-4 py-2 items-center bg-green-500 text-white sm:px-6 sm:py-4 font-normal rounded-lg hover:bg-green-600">
+                    <span className="flex-1 whitespace-nowrap text-xl">Add clothes</span>
+                    <HiViewGridAdd size={30} className="hidden sm:inline" />
+                </div>
+                <div
+                    role="button"
+                    onClick={() => setOpenCreate(true)}
+                    className="button flex justify-between items-center sm:hidden text-white px-4 py-2 font-normal rounded-lg">
+                    <span className="text-xl text-white">Generate</span>
+                    <span className="text-2xl">🪄</span>
+                </div>
             </div>
-            <div
-                role="button"
-                onClick={() => setOpenCreate(true)}
-                className="fixed top-10 right-10 pointer z-10 flex justify-between items-center bg-green-500 sm:hidden text-white px-4 py-2 font-normal rounded-lg hover:bg-green-600">
-                <span className="text-xl text-white">Generate</span>
-                <span className="text-2xl">🪄</span>
-            </div>
+
             {
                 (!isError && !isLoading && clothes.length === 0 && noFilter) ? (
                     <div className="flex flex-col w-full items-center justify-center gap-8 pt-16">
@@ -151,7 +154,7 @@ export default function Wardrobe({ user }: InferGetServerSidePropsType<typeof ge
                         </button>
                     </div>
                 ) : (
-                    <div className="p-4 sm:ml-64  bg-gray-50">
+                    <div className="px-4 pb-24 sm:ml-64  bg-gray-50">
                         {filters && <Filter filters={filters} updateFilter={handleFilter} filter={filter} />}
                         <div className="grid grid-cols-1 max-[600px]:grid-cols-1 max-[601px]:grid-cols-2 min-[850px]:grid-cols-1 min-[851px]:grid-cols-2 min-[1151px]:grid-cols-3 gap-4 sm:gap-10">
 

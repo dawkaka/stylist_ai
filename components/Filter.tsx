@@ -8,8 +8,8 @@ export default function Filter({ filters, filter, updateFilter }: { filter: Filt
     }
     const val = filter
     return (
-        <div className="flex items-center justify-center gap-10 mb-10 py-4">
-            <div className="flex flex-wrap gap-4">
+        <div className="flex items-center justify-center gap-10 mb-4 py-4">
+            <div className="grid grid-cols-4 gap-4">
                 <Select
                     id="Type"
                     onChange={(e) => {

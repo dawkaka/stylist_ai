@@ -102,7 +102,7 @@ export const Select: React.FC<{
             onChange={onChange}
             value={value}
         >
-            <option value=''>Select {id.split("-")[0]}</option>
+            <option value=''>{id.split("-")[0]}</option>
             {
                 options.map(o => <option key={o} value={o}>{o}</option>)
             }
