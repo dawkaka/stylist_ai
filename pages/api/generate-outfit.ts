@@ -3,7 +3,8 @@ import prisma from '../../lib/prismadb';
 import { Configuration, OpenAIApi } from 'openai';
 import { getServerSession } from "next-auth";
 import { authOptions } from "./auth/[...nextauth]";
-import { json } from "stream/consumers";
+import { Clothes } from "@prisma/client";
+import { Clothing } from "@/types";
 const configuration = new Configuration({
     apiKey: process.env.OPENAI_API_KEY,
 });
@@ -19,7 +20,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     switch (method) {
         case "POST":
             try {
-                const { occasion, selection } = req.body;
+                const { occasion, selection, except } = req.body;
                 const hasSelection = Array.isArray(selection) && selection.length > 0
                 let clothes
                 if (hasSelection) {
@@ -42,9 +43,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                         fit: cloth.fit
                     }
                 }))
+                console.log(except)
 
                 const prompt = `
-                Using your wardrobe, please provide recommendations for an outfit suitable for the following occasion: ${occasion}. Your wardrobe includes the following clothing items: ${clothing}. Please provide your recommendations in JSON format, including an array of selected item IDs and a general description of how the items should be worn and why they were chosen. Your recommendations should only include items from the provided wardrobe and should comprise a single outfit. Please do not include accessories unless they are necessary and will complement the outfit.
+                     Using your wardrobe, please provide recommendations for an outfit suitable for the following occasion: ${occasion}. Your wardrobe includes the following clothing items: ${clothing}. Do not recommend any of these exact combinations: ${except}. Please provide your recommendations in JSON format  {"selectedItems":string[], "description":string}, including an array of selected item IDs and a general description of how the items should be worn and why they were chosen. Your recommendations should only include items from the provided wardrobe and should comprise a single outfit. Please do not include accessories unless they are necessary and will complement the outfit.
                 `
                 const response = await openai.createCompletion({
                     model: "text-davinci-003",
@@ -53,11 +55,21 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                     max_tokens: clothes.length * 90,
                 });
                 const recommendations = response.data.choices
-                let data = { selectedItems: [], description: "" }
+                let data = { outfit: [], description: "", selectedItems: [] }
                 if (recommendations[0].text) {
-                    data = JSON.parse(recommendations[0].text?.replace("Response:", "").trim())
+                    const t = recommendations[0].text
+                    const f = t.indexOf("{")
+                    const l = t.lastIndexOf("}")
+                    const outfit = t.substring(f, l + 1)
+                    console.log(outfit)
+                    data = JSON.parse(outfit) || JSON.parse(JSON.stringify(outfit))
                 }
-                const items = await prisma.clothes.findMany({ where: { id: { in: data.selectedItems } } })
+                let items: Clothing[] = []
+                if (data.outfit && data.outfit.length > 0) {
+                    items = await prisma.clothes.findMany({ where: { id: { in: data.outfit } } })
+                } else if (data.selectedItems && data.selectedItems.length > 0) {
+                    items = await prisma.clothes.findMany({ where: { id: { in: data.selectedItems } } })
+                }
                 res.status(200).json({ items, generalInfo: data.description });
             } catch (error) {
                 res.status(500).json({ message: 'Internal server error' });

@@ -8,7 +8,7 @@ import ClothingItem from "@/components/Item";
 import { useInfiniteQuery, useQuery, useQueryClient } from "react-query";
 import axios from "axios";
 import { Clothing, Filter as FitlerType } from "@/types";
-import { Error, Label, Loader, Select } from "@/components/misc";
+import { Error, Loader } from "@/components/misc";
 import GenerateOutif from "@/components/GenerateOutfit";
 import Filter from "@/components/Filter";
 
@@ -111,6 +111,13 @@ export default function Wardrobe({ user }: InferGetServerSidePropsType<typeof ge
                     </div>
                 </div>
             </aside>
+            <div
+                role="button"
+                onClick={() => setOpenAdd(true)}
+                className="pointer hidden sm:block fixed bottom-10 z-10 right-10 flex justify-between px-4 py-2 items-center bg-green-500 text-white sm:px-6 sm:py-4 font-normal rounded-lg hover:bg-green-600">
+                <span className="flex-1 whitespace-nowrap text-xl">Add clothes</span>
+                <HiViewGridAdd size={30} className="hidden sm:inline" />
+            </div>
             <div className="fixed bottom-4 z-10 flex px-4 justify-between w-full">
                 <div
                     role="button"

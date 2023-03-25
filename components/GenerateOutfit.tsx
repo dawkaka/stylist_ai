@@ -1,6 +1,6 @@
 import { Clothing } from "@/types";
 import axios, { AxiosResponse } from "axios";
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { BiArrowBack } from "react-icons/bi"
 import { useMutation, useQueries, useQuery, UseQueryResult } from "react-query";
 import ClothingItem, { RecommendedItem } from "./Item";
@@ -11,9 +11,10 @@ const GenerateOutif: React.FC<{ close: () => void, selection: string[] }> = ({ c
     const [step, setStep] = useState(0)
     const [occasion, setOccasion] = useState("")
     const [target, setTarget] = useState<"all" | "sel">("all")
+    const exceptions = useRef<string[][]>([])
 
     const { data, isLoading, isError, mutate } = useMutation({
-        mutationFn: () => axios.post(`/api/generate-outfit`, { occasion, selection: target === "sel" ? selection : [] }).then(res => res.data),
+        mutationFn: () => axios.post(`/api/generate-outfit`, { occasion, selection: target === "sel" ? selection : [], except: exceptions.current }).then(res => res.data),
     })
 
     const generateOutift = () => {
@@ -125,7 +126,23 @@ const GenerateOutif: React.FC<{ close: () => void, selection: string[] }> = ({ c
                                         }
                                     </div>
                                 </div>
-
+                                <div className="w-full px-4 my-5 flex justify-between">
+                                    <div></div>
+                                    {
+                                        (data || isError) && <button
+                                            className="button px-4 py-1 shadow  rounded-lg"
+                                            onClick={() => {
+                                                if (data) {
+                                                    exceptions.current.push(data.items.map((item: Clothing) => item.id))
+                                                }
+                                                generateOutift()
+                                            }
+                                            }
+                                        >
+                                            Generate again
+                                        </button>
+                                    }
+                                </div>
 
                             </div>
                         )

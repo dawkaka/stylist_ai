@@ -14,15 +14,15 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <header className="relative h-[100vh] flex flex-col justify-center overflow-hidden bg-gradient-to-b from-gray-100 to-white py-12 sm:py-16 lg:py-20 xl:py-24">
+      <header className="relative h-[100vh] w-full flex flex-col justify-center overflow-hidden bg-gradient-to-b from-gray-100 to-white py-12 sm:py-16 lg:py-20 xl:py-24">
         <div className="absolute inset-x-0 top-0 h-full rotate-180 text-gray-500/20 opacity-60 [mask-image:linear-gradient(to_bottom,transparent,white,white)]">
           <svg className="absolute inset-0 h-full w-full" xmlns="http://www.w3.org/2000/svg"><defs>
             <pattern id="grid-pattern" width="32" height="32" patternUnits="userSpaceOnUse" x="50%" y="100%" patternTransform="translate(0 -1)">
               <path d="M0 32V.5H32" fill="none" stroke="currentColor"></path></pattern></defs><rect width="100%" height="100%" fill="url(#grid-pattern)"></rect>
           </svg>
         </div>
-        <div className="relative mx-auto max-w-8xl px-4 sm:px-6 lg:px-8">
-          <div className="mx-auto max-w-8xl text-center lg:max-w-4xl">
+        <div className="relative mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="mx-auto text-center">
             <h1 className="text-4xl font-bold tracking-tight text-gray-800 sm:text-6xl xl:text-7xl">Virtual Wardrobe And <span className="text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-blue-500">Ai Stylist</span></h1>
             <h2 className="mt-4 text-lg font-normal leading-7 text-gray-700 sm:text-xl lg:mx-auto lg:max-w-3xl xl:text-2xl xl:leading-9">Have your entire wardrobe in one place and let our ai stylist recommend outfits for you. Say goodbye to the hassle of choosing what to wear.</h2>
           </div>
