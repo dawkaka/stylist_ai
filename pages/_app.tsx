@@ -26,11 +26,11 @@ export default function App({
         <meta name="twitter:card" content="summary_large_image" /><meta name="description" content="Your entire wardrobe in one place and let our Ai stylist recommend outfits for you." />
         <meta name="keywords" content="virtual wardrobe, ai, stylist, outfit recommendation" />
         <meta name="fragment" content="!" />
-        <meta name="robots" content="index,follow" /><meta property="og:title" content="Virtual Wardrobe with your partner" />
+        <meta name="robots" content="index,follow" /><meta property="og:title" content="Virtual Wardrobe and Ai stylist" />
         <meta property="og:description" content="our entire wardrobe in one place and let our Ai stylist recommend outfits for you." />
         <meta property="og:image" content="https://www.virtualwardrobe.co/og.png" />
         <meta property="og:url" content="https://www.virtualwardrobe.co" />
-        <meta name="twitter:title" content="Virtual Wardrobe with your partner" />
+        <meta name="twitter:title" content="Virtual Wardrobe and Ai stylist" />
         <meta name="twitter:data1" content="" />
         <meta name="twitter:description" content="Your entire wardrobe in one place and let our Ai stylist recommend outfits for you." />
         <meta name="twitter:image:alt" content="Virtual Wardrobe" />
