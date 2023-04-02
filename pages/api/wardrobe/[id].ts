@@ -45,7 +45,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
                 });
                 res.status(200).json({ message: "Clothing description updated successfully" });
             } catch (err) {
-                console.log(err);
                 res.status(500).json({ error: "Error updating clothing item" });
             }
             break;
@@ -97,7 +96,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
                 await prisma.clothes.delete({ where: { id: String(id) } });
                 res.status(200).json({ message: 'Clothing deleted successfully' });
             } catch (err) {
-                console.log(err);
                 res.status(500).json({ error: 'Error deleting clothing' });
             }
         default:

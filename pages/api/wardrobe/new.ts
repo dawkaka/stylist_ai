@@ -64,7 +64,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
                     });
                     res.status(200).json({ message: "Clothes added successfully", createdClothes });
                 } catch (err) {
-                    console.log(err)
                     res.status(500).json({ error: "Error adding clothes" });
                 }
             });
