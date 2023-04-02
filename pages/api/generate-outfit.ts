@@ -43,7 +43,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                         fit: cloth.fit
                     }
                 }))
-                console.log(except)
 
                 const prompt = `
                      Using your wardrobe, please provide recommendations for an outfit suitable for the following occasion: ${occasion}. Your wardrobe includes the following clothing items: ${clothing}. Do not recommend any of these exact combinations: ${except}. Please provide your recommendations in JSON format  {"selectedItems":string[], "description":string}, including an array of selected item IDs and a general description of how the items should be worn and why they were chosen. Your recommendations should only include items from the provided wardrobe and should comprise a single outfit. Please do not include accessories unless they are necessary and will complement the outfit.
@@ -61,7 +60,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                     const f = t.indexOf("{")
                     const l = t.lastIndexOf("}")
                     const outfit = t.substring(f, l + 1)
-                    console.log(outfit)
                     data = JSON.parse(outfit) || JSON.parse(JSON.stringify(outfit))
                 }
                 let items: Clothing[] = []
@@ -72,7 +70,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                 }
                 res.status(200).json({ items, generalInfo: data.description });
             } catch (error) {
-                res.status(500).json({ message: 'Internal server error' });
+                res.status(500).json({ message: 'something went wrong' });
             }
             break;
 
