@@ -26,7 +26,6 @@ export default function SignIn({ providers }: InferGetServerSidePropsType<typeof
     )
 }
 
-
 function Provider({ signIn, name }: { signIn: () => void, name: string }) {
     let icon = <FcGoogle size={25} />
     switch (name) {
